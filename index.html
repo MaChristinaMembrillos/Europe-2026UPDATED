@@ -108,6 +108,17 @@ body{font-family:Georgia,serif;background:var(--stone);color:var(--text);min-hei
 .day-section:last-child{border-bottom:none}
 .section-label{font-size:9px;font-family:Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:5px}
 .section-content{font-size:13px;font-family:Arial,sans-serif;line-height:1.6;color:var(--text)}
+.stops-list{padding:0;margin:0}
+.stop-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--stone-dark);align-items:flex-start;cursor:pointer}
+.stop-row:last-child{border-bottom:none}
+.stop-row.no-detail{cursor:default}
+.stop-time{font-size:13px;font-weight:700;color:var(--text-muted);min-width:54px;padding-top:2px;font-family:Arial,sans-serif;flex-shrink:0}
+.stop-main{flex:1;min-width:0}
+.stop-header{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.stop-name{font-size:16px;font-weight:600;color:var(--text);font-family:Arial,sans-serif;line-height:1.3}
+.stop-summary{font-size:13px;color:var(--text-muted);font-family:Arial,sans-serif;margin-top:2px;line-height:1.4}
+.stop-toggle{font-size:11px;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0;padding-top:3px;font-family:Arial,sans-serif}
+.stop-detail{display:none;margin-top:8px;padding:10px 12px;background:var(--stone);border-radius:8px;font-size:15px;line-height:1.6;color:var(--text);font-family:Arial,sans-serif;border-left:3px solid var(--gold)}
 .accom-icon{font-size:15px;margin-right:6px}
 .excursion-block{background:var(--green-light);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:9px 11px;font-size:13px;font-family:Arial,sans-serif;line-height:1.5;color:#1a3d2a}
 .excursion-block.booked{background:#fff8e8;border-left-color:var(--gold);color:#5a3e00}
@@ -346,86 +357,199 @@ body{font-family:Georgia,serif;background:var(--stone);color:var(--text);min-hei
 const SEGMENTS = [
   { id:"travel", name:"Travel Out", emoji:"✈️", color:"#4a5568", days:[
     { date:"Mon 14 Sep", location:"Launceston → Melbourne", calLabel:"Melbourne", flag:"🇦🇺",
-      img:"linear-gradient(160deg,#0f2347 0%,#1a4a7a 60%,#2d6a8f 100%)",heroEmoji:"🏙️",heroLabel:"Melbourne",heroSub:"Pan Pacific South Wharf",
-      accommodation:"Pan Pacific South Wharf, Melbourne",
-      transport:"Uber → Launceston Airport | VA1365 Launceston→Melbourne (Economy) Gary 19B · Leonie 19A dep 10:15am arr 11:20am | TransfersX Melbourne Airport → Pan Pacific South Wharf",
+      img:"linear-gradient(160deg,#0f2347 0%,#1a4a7a 60%,#2d6a8f 100%)",heroEmoji:"🏙️",heroLabel:"Melbourne",heroSub:"Marriott Hotel Docklands",
+      accommodation:"Melbourne Marriott Hotel Docklands, 15 Waterfront Way, Docklands — M Club room, 1 King, conf 76420348, AUD $324",
+      transport:"Uber → Launceston Airport | VA1365 Launceston→Melbourne (Economy) Gary 19B · Leonie 19A dep 10:15am arr 11:20am | TransfersX Melbourne Airport → Marriott Hotel Docklands",
       activity:"Morning: Uber to Launceston Airport. VA1365 departs 10:15am, arrives Melbourne 11:20am Terminal 3. TransfersX transfer to Pan Pacific South Wharf — check in, settle in, enjoy Melbourne for the evening. First night of the great adventure!",
       excursion:null, tags:["flight"],
-      links:[] },
+      links:[] ,
+      stops:[
+        {time:"Morning",name:"Launceston to Airport",summary:"Uber to Launceston Airport",detail:"Order Uber in advance. VA1365 departs 10:15am. Gary seat 19B, Leonie 19A."},
+        {time:"~11:20am",name:"Arrive Melbourne",summary:"TransfersX to Marriott Hotel Docklands",detail:"TransfersX driver meets you at arrivals. Transfer to Melbourne Marriott Hotel Docklands, 15 Waterfront Way. Conf 76420348."},
+        {time:"3:00pm",name:"Check in Marriott Docklands",summary:"M Club room 1 King bed M Club lounge access",detail:"Check-in from 3pm. M Club lounge access included. AUD 324 prepaid. Tel +61-03-8638-6000."},
+        {time:"Evening",name:"Melbourne free evening",summary:"Explore Docklands dinner at leisure",detail:"The Docklands waterfront has good dining options. MH148 departs 1:25pm tomorrow from Terminal 2."}
+      ]},
     { date:"Tue 15 Sep", location:"Melbourne → KL → Paris", calLabel:"In Transit", flag:"🌏",
       img:"linear-gradient(160deg,#0a0f1a 0%,#1a2d5c 50%,#2d4a8f 100%)",heroEmoji:"✈️",heroLabel:"Melbourne → KL → Paris",heroSub:"Malaysian Airlines MH148 · MH20",
       accommodation:"In Transit (Malaysian Airlines)",
       transport:"TransfersX Pan Pacific → Melbourne Airport Terminal 2 (~10am) | MH148 Melbourne→KL dep 1:25pm Gary 12H · Leonie 12K | MH20 KL→Paris CDG dep 11:40pm Gary 29A · Leonie 29B",
       activity:"TransfersX picks up ~10am for MH148 1:25pm departure from Terminal 2. Long overnight flight to Paris via Kuala Lumpur. Arrive Paris CDG early Wednesday morning. Use Airalo eSIM data from landing — activate on arrival. Try to sleep on the MH20 KL-Paris leg!",
       excursion:null, tags:["flight"], links:[] }
-  ]},
+  ],
+      stops:[
+        {time:"Morning",name:"Launceston to Airport",summary:"Uber to Launceston Airport",detail:"Order Uber in advance. VA1365 departs 10:15am. Gary seat 19B, Leonie 19A."},
+        {time:"~11:20am",name:"Arrive Melbourne",summary:"TransfersX to Marriott Hotel Docklands",detail:"TransfersX driver meets you at arrivals. Transfer to Melbourne Marriott Hotel Docklands, 15 Waterfront Way. Conf 76420348."},
+        {time:"3:00pm",name:"Check in Marriott Docklands",summary:"M Club room 1 King bed M Club lounge access",detail:"Check-in from 3pm. M Club lounge access included. AUD 324 prepaid. Tel +61-03-8638-6000."},
+        {time:"Evening",name:"Melbourne free evening",summary:"Explore Docklands dinner at leisure",detail:"The Docklands waterfront has good dining options. MH148 departs 1:25pm tomorrow from Terminal 2."}
+      ]},
 
   { id:"paris", name:"Paris", emoji:"🗼", color:"#2d6a8f", days:[
     { date:"Wed 16 Sep", location:"Paris – Arrival Day", flag:"🇫🇷",
-      img:"linear-gradient(160deg,#8b1a4a 0%,#3a0f2a 50%,#1a1f3a 100%)",heroEmoji:"🗼",heroLabel:"Paris – Arrival Day",heroSub:"Les Jardins de Verve · Latin Quarter",
+      img:"linear-gradient(160deg,#8b1a4a 0%,#3a0f2a 50%,#1a1f3a 100%)",heroEmoji:"🗼",heroLabel:"Paris – Arrival Day",heroSub:"Le Jardin de Verre · Rue Mouffetard · 2CV Night Tour",
       accommodation:"Le Jardin de Verre by Locke, Latin Quarter — Locke Studio",
-      transport:"Daytrip private transfer CDG → Le Jardin de Verre, Latin Quarter | EES biometric processing at CDG on arrival",
-      activity:"Arrive CDG ~07:00. EES biometric processing on arrival. Daytrip driver meets you at arrivals. Transfer to Le Jardin de Verre (~45 min). Paris City Tax AUD ~$117 payable on check-in — have EUR on Wise card. Check-in from 11:00. Gentle first day: buy toiletries at Pharmacie Place Monge, Place Monge Market 11:15, Panthéon 13:00, Luxembourg Gardens 14:45, Rue Mouffetard stroll 17:30. Dinner at Quartier Latin Pizza 18:30. Lights out 21:00 — jet lag is real.",
-      excursion:null, tags:["arrival"],
+      transport:"Welcome Pickups transfer CDG → Le Jardin de Verre, Latin Quarter | EES biometric processing at CDG on arrival | 2CV pickup from hotel 8:00pm",
+      activity:"Arrive CDG ~07:00. EES biometric processing on arrival — allow extra time, can be unpredictable. Welcome Pickups driver meets you at arrivals. Transfer to Le Jardin de Verre (~45 min). Paris City Tax AUD ~$117 payable on check-in — have EUR on Wise card. Bags dropped by ~11am. Afternoon walking loop through the neighbourhood: Place Monge Market (Wed open 7:30am–12pm — if bags dropped in time, catch the last of it — premium produce, cheese, fresh seafood, EUR cash for small purchases) → walk north up Rue Mouffetard (one of the oldest streets in Paris, medieval cobblestones, grab a crepe for a light lunch from a street vendor) → Pantheon (magnificent neoclassical exterior, free to admire — Marie Curie, Victor Hugo and Alexandre Dumas buried inside, €13 if you want to enter) → west to Jardin du Luxembourg (find a green chair by the octagonal fountain, sit and breathe it all in — this is where you truly arrive in Paris. Also seek out the Medici Fountain on the east side of the gardens — a stunning 17th century grotto fountain tucked in a long shaded pool, one of the most romantic and peaceful spots in Paris, easy to miss but worth finding. 25–35 min total) → walk back east toward hotel → Pharmacie Place Monge on the way back — stock up on deodorant, sunscreen, toothpaste and any other toiletries for the trip. Total loop ~2km, gentle pace. NOTE: Arenes de Lutece (49 Rue Monge, Paris's only Roman amphitheatre, 1st century AD, completely free) is right on your route to the Jardin des Plantes Batobus stop on Thursday or Friday morning — make a short detour of 10 min to duck inside on the way through. Long rest before the evening. 6:00pm: Light dinner at a local French bistro near the hotel. 8:00pm: 2CV Legendary Paris Night Tour departs from hotel — 2.5 hours covering city lights, Seine bridges, Eiffel Tower illuminated, Montmartre and Sacre-Coeur at night. Dropped back at hotel ~10:30pm.",
+      excursion:"2CV Legendary Paris Night Tour — hotel pickup 8:00pm, returns 10:30pm, book at 2cvparistour.com", tags:["arrival"],
       links:[
-        {label:"Hotel Check-in", url:"https://byleocke.com/hotels/les-jardins-de-verve/", type:"book"},
+        {label:"Book 2CV Night Tour", url:"https://2cvparistour.com/the-famous-montmartre/", type:"book"},
+        {label:"Hotel Check-in", url:"https://www.lockeliving.com/en/paris/le-jardin-de-verre-by-locke/", type:"book"},
         {label:"CDG Arrival Info", url:"https://www.parisaeroport.fr/en/passengers/access/paris-charles-de-gaulle/public-transport", type:"info"}
-      ] },
+      ] ,
+      stops:[
+        {time:"~7:00am",name:"Arrive Paris CDG",summary:"Welcome Pickups transfer to hotel",detail:"EES biometric processing on arrival. Welcome Pickups driver meets you. Transfer to Le Jardin de Verre approximately 45 min. Paris City Tax AUD approximately 117 on check-in, have EUR on Wise card."},
+        {time:"~11:00am",name:"Bags dropped at hotel",summary:"Freshen up and get oriented",detail:"Check-in from 3pm but bags can be dropped earlier. Freshen up and change clothes."},
+        {time:"~11:15am",name:"Place Monge Market",summary:"Wed open 7:30am to 12pm",detail:"If bags dropped in time, head to Place Monge for premium produce, cheese, fresh seafood, flowers. EUR cash for small purchases. Closes noon."},
+        {time:"~11:45am",name:"Rue Mouffetard",summary:"Crepe lunch on medieval street",detail:"Head north up La Mouffe. One of the oldest streets in Paris, medieval cobblestones. Grab a crepe from a street vendor for a light lunch."},
+        {time:"~12:15pm",name:"Pantheon",summary:"Neoclassical dome exterior free",detail:"Magnificent neoclassical dome, free to admire from outside. Marie Curie, Victor Hugo and Alexandre Dumas buried inside, crypt entry 13 euro. May be free on European Heritage Days. Allow 10 to 15 min."},
+        {time:"~12:30pm",name:"Rue Soufflot snack stop",summary:"Pick up a sweet snack for the gardens",detail:"Rue Soufflot runs directly west from the Pantheon to the Luxembourg Gardens entrance. Pick up a pastry from a cafe or patisserie on the way through."},
+        {time:"~12:45pm",name:"Jardin du Luxembourg",summary:"Green chairs Medici Fountain picnic",detail:"Find a green chair by the octagonal fountain and breathe it all in. This is where you truly arrive in Paris. Seek out the Medici Fountain on the east side, a 17th century grotto fountain in a long shaded pool. Enjoy your snack here. Allow 25 to 35 min."},
+        {time:"~1:30pm",name:"Pharmacie Place Monge",summary:"Toiletries for the trip on the way back",detail:"Stock up on deodorant, sunscreen and toothpaste. Dispose of what remains in Istanbul before the flight home."},
+        {time:"~2:00pm",name:"Rest at hotel",summary:"Long rest before the evening",detail:"You have been travelling 30+ hours. A proper rest now means you enjoy the evening. Set an alarm for 5:30pm."},
+        {time:"6:00pm",name:"Dinner Place de la Contrescarpe",summary:"2 min walk from hotel",detail:"Place de la Contrescarpe is 2 minutes from the hotel. Choose whichever bistro or terrace looks good. Nothing heavy. Back at hotel by 7:30pm."},
+        {time:"8:00pm",name:"2CV Legendary Paris Night Tour",summary:"Hotel pickup 2.5 hrs home 10:30pm BOOKED",detail:"2CV Legendary Paris Night Tour departs from hotel. 2.5 hours covering city lights, Seine bridges, Eiffel Tower illuminated, Montmartre and Sacre-Coeur at night. Dropped back at hotel 10:30pm."}
+      ]},
 
-    { date:"Thu 17 Sep", location:"Paris – Batobus & Moulin Rouge", flag:"🇫🇷",
-      img:"linear-gradient(160deg,#8b1a1a 0%,#5a0f0f 50%,#1a0a0a 100%)",heroEmoji:"🎭",heroLabel:"Moulin Rouge Night",heroSub:"Montmartre · 20:30 Show",
+    { date:"Thu 17 Sep", location:"Paris – Left Bank & Moulin Rouge", flag:"🇫🇷",
+      img:"linear-gradient(160deg,#8b1a1a 0%,#5a0f0f 50%,#1a0a0a 100%)",heroEmoji:"🎭",heroLabel:"Left Bank & Moulin Rouge Night",heroSub:"Musee d'Orsay · Saint-Germain · Pink Mamma · Moulin Rouge",
       accommodation:"Le Jardin de Verre by Locke — Locke Studio",
-      transport:"Batobus 2-Day Pass from Jardin des Plantes | Taxi to Montmartre 17:45",
-      activity:"08:30 leave hotel. Arènes de Lutèce 08:50. Jardin des Plantes 09:05. Batobus 10:00 → Eiffel Tower stop. Trocadéro terrace 10:35. Coffee at Carette 11:15. Batobus → Louvre stop 12:00. Lunch Right Bank 12:20. Opéra Garnier 13:30. Galeries Lafayette glass dome & free rooftop 14:00. Madeleine 14:45. Place de la Concorde 15:00. Tuileries gardens 15:15. Palais Royal 15:45. Louvre exterior & pyramid 16:05. Batobus return 16:30. Hotel rest 17:00. Taxi 17:45 → Montmartre 18:10. Dinner La Couvée 18:30. Walk Moulin Rouge 20:15. Show 20:30–23:00. Taxi home 23:00.",
-      excursion:"Moulin Rouge Show – 20:30 seating (BOOK IMMEDIATELY – sells out months ahead)",
+      transport:"Walk to boulangerie breakfast en route | Batobus 48hr pass from Jardin des Plantes | Metro/walk to Montmartre evening",
+      activity:"9:00am: Breakfast at boulangerie on route to Jardin des Plantes. 9:45am: Board Batobus at Jardin des Plantes — buy 48hr pass. 10:00am: Full scenic lap of the Seine (~70 min) — stay on board passing Notre-Dame, Hotel de Ville, Louvre, Place de la Concorde, Eiffel Tower, Invalides and Pont Alexandre III all from the water. Brilliant orientation of Paris. 11:10am: Alight Musee d'Orsay stop. 11:15am: Musee d'Orsay timed entry — head straight to Level 5 Impressionists: Monet, Van Gogh, Renoir, Degas, Cezanne. Temporary exhibition Spirit of the Times closes 20 Sep — catch it now. Allow 1.5 hrs. €16, pre-book at musee-orsay.fr. 12:45pm: Casual lunch at the Musee d'Orsay cafe or terrace — relaxed, no booking needed. 1:45pm: Reboard Batobus → Saint-Germain-des-Pres (7 min). 1:55pm: Coffee and snack at Les Deux Magots or Cafe de Flore — sit outside, iconic Parisian experience. 2:45pm: Gentle wander Saint-Germain backstreets — Rue de Buci, Marche Saint-Germain. 3:15pm: Reboard Batobus → Jardin des Plantes (30 min, passing Musee d'Orsay and Notre-Dame on the water). 3:45pm: Walk 15 min back to hotel. 4:00pm: Rest. 6:15pm: Pink Mamma, Montmartre — Italian dinner (book from 2 September, opens 15 days prior). 8:15pm: Walk to Moulin Rouge. 8:30pm: Moulin Rouge Feerie show.",
+      excursion:"Moulin Rouge Feerie Show — 8:30pm seating (book in advance, sells out) | Musee d'Orsay timed entry 11:15am €16 | Batobus 48hr pass",
       tags:[],
       links:[
+        {label:"Les Invalides Tickets", url:"https://www.musee-armee.fr/en/visit/prepare-your-visit/rates-and-opening-times.html", type:"book"},
         {label:"Moulin Rouge Tickets", url:"https://www.moulinrouge.fr/en/shows/feerie", type:"ticket"},
-        {label:"Book La Couvée", url:"https://www.thefork.com/restaurant/la-couvee-r715441", type:"rest"},
-        {label:"Batobus Passes", url:"https://www.batobus.com/en/tickets", type:"book"},
-        {label:"Galeries Lafayette Rooftop", url:"https://www.galerieslafayette.com/rooftop/", type:"info"}
-      ] },
+        {label:"Pink Mamma Restaurant", url:"https://bigmammagroup.com/en/trattorias/pink-mamma/", type:"rest"},
+        {label:"Batobus Passes", url:"https://www.batobus.com/en/tickets", type:"book"}
+      ] ,
+      stops:[
+        {time:"9:00am",name:"Breakfast at boulangerie",summary:"On route to Jardin des Plantes",detail:"Boulangerie on Rue Monge near the hotel. NOTE: If time permits, 5 min detour to Arenes de Lutece at 49 Rue Monge — Paris only Roman amphitheatre, 1st century AD, completely free, locals playing boules. Enter through the tunnel gate on Rue de Navarre."},
+        {time:"9:45am",name:"Jardin des Plantes Batobus stop",summary:"Buy 48hr pass first boat 10am",detail:"Walk 15 min to Quai Saint-Bernard. Buy the Batobus 48hr pass at the stop or online at batobus.com. Covers all stops for 2 days."},
+        {time:"10:00am",name:"Full scenic Seine lap",summary:"70 min stay on board enjoy the ride",detail:"Board at Jardin des Plantes and stay on for the full circuit. Passing Notre-Dame, Hotel de Ville, Louvre, Place de la Concorde, Eiffel Tower, Pont Alexandre III and Invalides all from the water."},
+        {time:"11:10am",name:"Alight Invalides Batobus stop",summary:"Walk 5 min to Les Invalides entrance",detail:"Walk south 5 min to the museum entrance. NOTE: Leave the big backpack at the hotel today. Large bags not permitted inside. Sling bag only."},
+        {time:"11:15am",name:"Les Invalides and Napoleon Tomb",summary:"Army Museum Dome des Invalides 17 euro pre-book",detail:"17 euro per adult covers the entire site. Napoleon tomb, Army Museum, Dome des Invalides, Saint-Louis Cathedral. Mandatory security check on entry. Allow 1.5 hours. Book at musee-armee.fr. The tomb under the golden dome is genuinely dramatic."},
+        {time:"12:45pm",name:"Lunch near Invalides",summary:"Brasseries on Boulevard de la Tour-Maubourg",detail:"Good brasseries and cafes on the streets around Invalides. Relaxed sit-down lunch, allow 1 hour."},
+        {time:"1:45pm",name:"Reboard Batobus to Saint-Germain",summary:"7 min ride",detail:"Walk back to Invalides Batobus stop and board heading east. 7 min to Saint-Germain-des-Pres."},
+        {time:"1:55pm",name:"Les Deux Magots or Cafe de Flore",summary:"Coffee and snack sit outside",detail:"Two iconic cafes right on the Batobus stop doorstep on Boulevard Saint-Germain. Sit outside and watch the world go by. Worth doing once. Allow 45 min."},
+        {time:"2:45pm",name:"Wander Saint-Germain",summary:"Rue de Buci Marche Saint-Germain",detail:"Gentle backstreet wander. Browse, window shop, no agenda."},
+        {time:"3:15pm",name:"Reboard Batobus home",summary:"Saint-Germain to Jardin des Plantes 30 min",detail:"Board heading east. Passes Musee d Orsay and Notre-Dame on the water. Alight Jardin des Plantes, walk 15 min back to hotel."},
+        {time:"4:00pm",name:"Rest at hotel",summary:"Essential rest before a big evening",detail:"Pink Mamma and Moulin Rouge is a late night. Proper rest now."},
+        {time:"5:45pm",name:"Book G7 Taxi for 5:50pm pickup",summary:"Hotel to Pink Mamma Pigalle — 15 to 20 min ride",detail:"G7 Taxi from hotel to Pink Mamma, 20bis Rue de Douai, Pigalle. Book via G7 app or call +33 1 47 39 47 39. Book at least 2 hours in advance. Journey 15 to 20 min from Latin Quarter to Pigalle. Also book your return taxi from Moulin Rouge area at the same time for approximately 11pm."},
+        {time:"6:15pm",name:"Pink Mamma Montmartre",summary:"Italian dinner — 20bis Rue de Douai Pigalle — book from 2 September",detail:"Pink Mamma, 20bis Rue de Douai, Pigalle (foot of Montmartre). Book from 2 September 2026, opens 15 days prior, fills very fast. Four-story Italian restaurant with glass rooftop and secret basement speakeasy bar. Italian sharing plates, truffle pasta, Neapolitan pizza, large cuts of meat on the grill. Allow 2 hours. Even with a reservation, expect a short queue at the door."},
+        {time:"8:15pm",name:"Walk to Moulin Rouge",summary:"3 to 5 min walk from Pink Mamma",detail:"Pink Mamma at 20bis Rue de Douai is a 3 to 5 minute walk to the Moulin Rouge on Boulevard de Clichy. Head south on Rue de Douai toward the boulevard. The red windmill and neon lights are unmissable."},
+        {time:"8:30pm",name:"Moulin Rouge Feerie Show",summary:"BOOKED — legendary cabaret — 2 hours",detail:"The world famous Feerie show. 2 hours of spectacular cabaret, dancers, costumes and champagne. Ends approximately 10:30pm."},
+        {time:"10:30pm",name:"Le Toit rooftop bar — optional",summary:"Right on top of the Moulin Rouge under the windmill",detail:"Le Toit (The Roof) is the official Moulin Rouge rooftop bar, accessible from the Bar a Bulles entrance on the side of the building. Cocktails and tapas beneath the illuminated wings of the windmill on a terrace with wooden floorboards and fruit trees. One of the most atmospheric spots in Paris at night. If energy allows after the show, this is a perfect finale — you are already right there."},
+        {time:"~11:30pm",name:"G7 Taxi home",summary:"Pre-booked return — Pigalle to hotel 20 min",detail:"G7 Taxi from Moulin Rouge area (Boulevard de Clichy) back to Latin Quarter hotel. 20 min. Alternatively Metro Line 2 from Blanche station (right outside Moulin Rouge) to Saint-Michel, 6 stops approximately 12 min."}
+      ]},
 
-    { date:"Fri 18 Sep", location:"Paris – Left Bank, Marais & 2CV Tour", flag:"🇫🇷",
-      img:"linear-gradient(160deg,#1a3a5c 0%,#0f2040 50%,#0a1525 100%)",heroEmoji:"⛪",heroLabel:"Left Bank, Marais & 2CV Tour",heroSub:"Notre-Dame · Place des Vosges",
+    { date:"Fri 18 Sep", location:"Paris – Right Bank Day", flag:"🇫🇷",
+      img:"linear-gradient(160deg,#1a3a5c 0%,#0f2040 50%,#0a1525 100%)",heroEmoji:"⛪",heroLabel:"Right Bank Day",heroSub:"Opera Garnier · Galeries Lafayette · Sainte-Chapelle · Notre-Dame",
       accommodation:"Le Jardin de Verre by Locke — Locke Studio",
-      transport:"Batobus Day 2 | Taxi Marais → hotel 15:15 | 2CV pickup hotel 20:00",
-      activity:"08:30 leave. Scenic walk to Batobus via quays 08:50. Optional crêpe stop 09:15. Batobus 10:00 → Invalides. Pont Alexandre III 10:20. Petit Palais (FREE museum) 10:40. Les Invalides & Napoleon's Tomb 11:20. Batobus → Notre-Dame 12:10. Notre-Dame exterior & Île Saint-Louis 12:25. Takeaway lunch 13:00. Marais stroll 13:45: Rue des Rosiers, Place des Vosges (must-see!), Boulevard Beaumarchais. Taxi hotel 15:15. Rest 15:45–18:00. Wine tasting + small plates Vins & Whisky 18:00 (serves as dinner). 2CV Famous Montmartre Night Tour 20:00 from hotel — Sacré-Cœur, Place du Tertre, hidden streets, Paris panorama. Home 22:00.",
-      excursion:"2CV Famous Montmartre Night Tour – hotel pickup 20:00 (€180/car) | Wine + small plates Vins & Whisky 18:00",
+      transport:"Batobus 48hr pass Day 2 — Jardin des Plantes → Place de la Concorde then Notre-Dame → Jardin des Plantes home",
+      activity:"9:00am: Breakfast at boulangerie on route. 9:45am: Board Batobus at Jardin des Plantes → Place de la Concorde (~45 min ride). 10:30am: Alight Place de la Concorde — obelisk and fountain views. 10:35am: Cross Pont Alexandre III → Petit Palais (free permanent collection, Beaux-Arts interior, 25 min). 11:10am: Walk back north up Rue Royale. 11:25am: La Madeleine — dramatic neoclassical exterior, quick look inside, Fauchon luxury food shop on the square. 11:35am: Walk east → Opera Garnier. 11:45am: Opera Garnier self-guided visit (pre-booked 11:30am slot, 30 min arrival window) — grand staircase, Chagall ceiling, 17 types of marble, Phantom of the Opera setting. Allow 60-75 min. ~€15, book at operadeparis.fr. 1:00pm: Walk 5 min → Galeries Lafayette Gourmet, 35 Bvd Haussmann — 5,000m2, truffle counter, Pierre Herme macarons, Petrossian caviar, wine cave. 35-40 min browse. 1:40pm: Galeries Lafayette rooftop (free) — views over Opera, Eiffel Tower, Sacre-Coeur. 20 min. 2:00pm: Lunch at Bouillon Chartier, 7 Rue du Faubourg Montmartre — legendary 1896 brasserie, steak frites ~€15, queue outside but fast turnover. 1 hour. 3:05pm: Walk south through Grands Boulevards → Palais Royal. 3:20pm: Palais Royal — Buren columns (260 black and white striped columns, iconic), arcaded gardens, central fountain. Free. 25-30 min. 3:50pm: Walk south through Tuileries Gardens past Arc de Triomphe du Carrousel, cross to Ile de la Cite. 4:05pm: Walk east → Sainte-Chapelle, arrive early for two security checkpoints. 4:15pm: Wait for pre-booked 4:30pm slot — upper chapel stained glass soaring 15 metres, 15 panels of medieval glass built 1248, one of the most extraordinary interiors in Europe. €22, book at sainte-chapelle.fr. Allow 50 min. 5:10pm: Walk 2 min → Odette, 77 Rue Galande — legendary cream puffs (choux a la creme) in 9 flavours, buy a take-away box. Steps from Notre-Dame. 5:20pm: Walk 8 min → Notre-Dame interior (optional, free timed entry — notredamedeparis.fr, book 2 days before, very quiet after 5pm). Restored interior breathtaking. 30-40 min. 5:55pm: Walk 5 min → Batobus Notre-Dame stop. 6:00pm: Board Batobus → Jardin des Plantes (~37 min) — enjoy Odette cream puffs on the Seine. 6:40pm: Walk 15 min home. 7:30pm: Dinner at Otto, Rue Mouffetard — Michelin-listed izakaya-style bistro, binchotan coal cooking, sharing plates. Walk-in only, arrive early.",
+      excursion:"Opera Garnier 11:30am ~€15 (operadeparis.fr) | Sainte-Chapelle 4:30pm €22 (sainte-chapelle.fr) | Notre-Dame free (notredamedeparis.fr, book 2 days before)",
       tags:[],
       links:[
-        {label:"Book 2CV Tour", url:"https://2cvparistour.com/the-famous-montmartre/", type:"book"},
-        {label:"Notre-Dame Info", url:"https://www.notredamedeparis.fr/en/visit/", type:"info"},
-        {label:"Petit Palais (Free)", url:"https://www.petitpalais.paris.fr/en", type:"info"},
-        {label:"Vins & Whisky", url:"https://maps.app.goo.gl/6SuQEfvNcGJjBc8G9", type:"rest"}
-      ] },
+        {label:"Opera Garnier Tickets", url:"https://www.operadeparis.fr/en/visits/palais-garnier", type:"book"},
+        {label:"Sainte-Chapelle Tickets", url:"https://tickets.monuments-nationaux.fr/en-GB/families?site=2035141861660400306", type:"book"},
+        {label:"Notre-Dame Timed Entry", url:"https://www.notredamedeparis.fr/en/visit/", type:"book"},
+        {label:"Galeries Lafayette Gourmet", url:"https://haussmann.galerieslafayette.com/en/the-gourmet-market/", type:"info"},
+        {label:"Odette Cream Puffs", url:"https://www.odette-paris.com/en/", type:"info"},
+        {label:"Otto Restaurant", url:"https://guide.michelin.com/us/en/ile-de-france/paris/restaurant/otto-1205489", type:"rest"}
+      ] ,
+      stops:[
+        {time:"9:00am",name:"Breakfast at boulangerie",summary:"On route to Jardin des Plantes",detail:"Quick stop at a local boulangerie on the way to the Batobus."},
+        {time:"9:45am",name:"Board Batobus Jardin des Plantes",summary:"48hr pass Day 2 ride to Place de la Concorde",detail:"Board at Jardin des Plantes. Ride to Place de la Concorde, approximately 45 min via Notre-Dame, Hotel de Ville, Louvre."},
+        {time:"10:30am",name:"Place de la Concorde",summary:"Obelisk fountains grand views",detail:"Egyptian obelisk, two fountains, views down the Champs-Elysees. One of the grandest public squares in Europe."},
+        {time:"10:35am",name:"Petit Palais",summary:"Free permanent collection Beaux-Arts interior",detail:"Cross Pont Alexandre III to Petit Palais, Avenue Winston Churchill. Free permanent collection. Impressionists, Flemish masters, Art Nouveau. Beautiful courtyard garden. Allow 25 to 30 min."},
+        {time:"11:10am",name:"La Madeleine",summary:"Neoclassical temple and Fauchon food shop",detail:"Walk north up Rue Royale. The Madeleine colonnaded exterior is remarkable. Free to enter briefly. Fauchon luxury food shop right on the square."},
+        {time:"11:45am",name:"Opera Garnier",summary:"Pre-booked 11:30am slot approx 15 euro",detail:"30 min arrival window so arriving 11:45am is fine. Grand staircase in 17 types of marble, Chagall ceiling, grand foyer. Book at operadeparis.fr."},
+        {time:"1:00pm",name:"Lunch near Opera",summary:"Find somewhere that looks good — plenty of options",detail:"The area around Opera and Grands Boulevards has excellent options. Galeries Lafayette Gourmet at 35 Boulevard Haussmann (5 min walk) is a great option for a casual lunch from the food hall. Or sit down at a brasserie on the boulevard. Allow 1 hour."},
+        {time:"1:40pm",name:"Galeries Lafayette Gourmet",summary:"5000 sqm food hall — browse even if not eating here",detail:"5 min walk east from Opera. Three levels — truffle counter, Pierre Herme macarons, Petrossian caviar, Bellota-Bellota Iberian ham, wine cave. Worth a browse regardless. Allow 30 min."},
+        {time:"2:10pm",name:"Galeries Lafayette Rooftop",summary:"Free views over Opera Eiffel Tower Sacre-Coeur",detail:"5 min to the main Coupole building. Panoramic free rooftop. 20 min."},
+        {time:"2:30pm",name:"Palais Royal",summary:"Buren columns arcaded gardens free",detail:"Walk south 15 min. Enter from Rue de Rivoli. The 260 black and white Buren columns are iconic. Arcaded gardens with linden trees and central fountain. Completely free. 25 to 30 min."},
+        {time:"3:10pm",name:"Tuileries and Arc du Carrousel",summary:"Walk south through the gardens",detail:"Walk south through the Tuileries past the Arc du Carrousel. Cross to Ile de la Cite heading toward Sainte-Chapelle."},
+        {time:"3:45pm",name:"Sainte-Chapelle",summary:"Pre-booked 4:30pm slot 22 euro — arrive early for security",detail:"Arrive well before 4:30pm. Two security checkpoints inside the Palais de Justice complex. Upper chapel stained glass soars 15 metres. 15 panels of medieval glass from 1248. Allow 50 min. Book at sainte-chapelle.fr."},
+        {time:"5:20pm",name:"Notre-Dame interior optional",summary:"Free timed entry quiet after 5pm",detail:"Restored interior is breathtaking. Pale limestone, rose windows, Gothic nave. Free at notredamedeparis.fr, book 2 days before. Allow 30 to 40 min."},
+        {time:"6:00pm",name:"Batobus home from Notre-Dame",summary:"Notre-Dame to Jardin des Plantes 37 min",detail:"Board at Notre-Dame stop (Quai de Montebello). Home approximately 6:40pm."},
+        {time:"7:30pm",name:"Dinner Otto Rue Mouffetard",summary:"Michelin-listed sharing plates walk-in only",detail:"Michelin-listed izakaya-style bistro on your own street. Binchotan coal cooking, seasonal sharing plates. Walk-in only — arrive early. Allow 1.5 to 2 hours."},
+        {time:"~9:30pm",name:"Caveau de la Huchette — optional",summary:"5 Rue de la Huchette — 5 min walk — jazz until 2:30am",detail:"Legendary underground jazz club in a 16th century cellar, 5 min walk from the hotel. Opens 9:30pm. Entry approximately 14 to 16 euro. Live jazz and swing every night with dancers. Appeared in La La Land. Open until 2:30am (5:30am Fridays). Only go if energy allows after a big day — an early night may be wiser before Versailles tomorrow."}
+      ]},
 
     { date:"Sat 19 Sep", location:"Paris – Versailles Day Trip", calLabel:"Paris", flag:"🇫🇷",
       img:"linear-gradient(160deg,#1a5c3a 0%,#0f3a20 50%,#0a1f10 100%)",heroEmoji:"👑",heroLabel:"Palace of Versailles",heroSub:"Hall of Mirrors · Gardens · Trianons",
       accommodation:"Le Jardin de Verre by Locke — Locke Studio",
       transport:"Walk to Gare d'Austerlitz | RER C 08:30 | Return ~16:00 | Taxi to Margaux 18:30",
-      activity:"08:00 leave. RER C 08:30 → Versailles Château-Rive Gauche (35 min, arrive ~09:15). Timed entry Palace 09:30–11:00: King's & Queen's Apartments, Hall of Mirrors. Golf cart rental 11:00 from Grand Canal kiosk. Explore gardens, Grand Trianon, Petit Trianon (Marie Antoinette's retreat), Queen's Hamlet (storybook village). Light lunch in gardens 13:30. Return station 15:15. RER C 16:00, Paris 16:45. Rest hotel 16:45–18:30. Taxi to Margaux 18:30. Dinner Margaux 19:00 overlooking Eiffel Tower. Sparkle displays at 20:00, 21:00 & 22:00. Back hotel ~21:30.",
-      excursion:"Versailles Passport ticket + timed entry 09:30 (BOOK NOW) | Golf cart rental | Margaux dinner 19:00 (BOOK URGENTLY)",
+      activity:"08:00 leave hotel. RER C 08:30 from nearest station → Versailles Chateau-Rive Gauche (35 min, arrive ~09:15). ENTRY PROCEDURE: You hold a Billet Passeport + VR Lumiere de la Liberte — Coupe-File (skip-the-line) for 2 people, €84 total paid. Entry point is the Pavillon d'Orleans at 9:30am — this is your dedicated skip-the-line entrance, NOT the general queue. Have your QR code ready on your phone (or PDF downloaded to phone). Bag security check on entry. Your ticket includes the VR experience Lumiere de la Liberte — do this immediately on entry while the palace is at its quietest. Allow 20-30 min. Then use your Coupe-File (skip-the-line) access to go straight to the Hall of Mirrors — no queuing, walk straight in. After the Hall of Mirrors, explore the King's and Queen's State Apartments at your own pace. The Passport covers the Palace interior, Gardens, Estate of Trianon (Grand Trianon, Petit Trianon, Queen's Hamlet) and the Park — only the Palace requires the timed slot, all other areas are free-roaming throughout the day. 9:30: VR Lumiere de la Liberte on entry (~20-30 min). 10:00: Hall of Mirrors — skip-the-line straight in. 10:30: King's and Queen's State Apartments. ~12:00: Head out to the gardens. Take the Little Train (Petit Train, €9 return) from the Palace — it covers the full estate loop to the Grand Trianon, Petit Trianon and Queen's Hamlet, perfect for a 3-hour exploration without exhausting your legs. Hop on and off at each stop. Grand Trianon — Louis XIV's pink marble retreat. Petit Trianon — Marie Antoinette's private escape. Queen's Hamlet (Hameau de la Reine) — the storybook thatched village Marie Antoinette had built to play at being a peasant. ~13:30: Picnic lunch from the kiosk at the end of the Grand Canal — grab supplies (sandwiches, drinks) and find a spot by the water. A classic Versailles experience. ~15:00: Return to the Palace via Little Train. ~15:30: Begin return to Paris. TRANSPORT NOTE: Check RER C status before departure — the line has had closures in 2026. PRIMARY: RER C from Versailles Chateau-Rive Gauche (10 min walk from Palace), ~35 min to central Paris. BACKUP: G7 Taxi from Place d'Armes outside the Palace gates direct to hotel (~45-50 min, book via G7 app or call +33 1 47 39 47 39). Arrive Paris ~16:30. Rest hotel until 18:30. Taxi to Margaux 18:30. Dinner Margaux 19:00 overlooking Eiffel Tower. Eiffel Tower sparkle shows at 21:00 and 22:00 — stroll down after dinner. Back hotel ~22:30.",
+      excursion:"Billet Passeport + VR Coupe-File (BOOKED ✅ €84) | 9:30am Pavillon d'Orleans — skip-the-line | VR then Hall of Mirrors | Little Train (Petit Train €9 return) for gardens and Trianons | Picnic at Grand Canal | BACKUP transport: G7 Taxi if RER C closed | Margaux dinner 19:00",
       tags:[],
       links:[
         {label:"Versailles Tickets", url:"https://ticket.chateauversailles.fr/en/ticketing", type:"ticket"},
+        {label:"Versailles Estate Map", url:"https://en.chateauversailles.fr/plan-your-visit/visit-routes-and-advice", type:"info"},
         {label:"Book Margaux", url:"https://www.restaurantmargaux.com/en/reservation", type:"rest"},
-        {label:"Versailles Golf Cart", url:"https://www.versailles-golf.fr", type:"book"},
-        {label:"RER C Info", url:"https://www.transilien.com/en/line-c/", type:"info"}
-      ] },
+        {label:"Versailles Golf Cart", url:"https://en.chateauversailles.fr/plan-your-visit/facilities/small-electric-vehicles", type:"book"},
+        {label:"RER C to Versailles Info", url:"https://www.ratp.fr/en", type:"info"}
+      ] ,
+      stops:[
+        {time:"8:00am",name:"Leave hotel for RER C",summary:"10 min walk to Saint-Michel Notre-Dame station",detail:"Walk to Saint-Michel Notre-Dame RER C station. BACKUP: G7 Taxi from hotel direct to Versailles, approximately 45 min. G7 app or call +33 1 47 39 47 39."},
+        {time:"~8:30am",name:"RER C to Versailles",summary:"35 min to Versailles Chateau-Rive Gauche",detail:"Take RER C toward Versailles Chateau-Rive Gauche. Journey 35 min. Walk 10 min from station up Avenue de Paris to the Palace."},
+        {time:"9:30am",name:"Entry Pavillon d Orleans",summary:"Billet Passeport VR Coupe-File BOOKED 84 euro",detail:"Entry point is the Pavillon d Orleans, your dedicated skip-the-line entrance. QR code ready on phone or PDF downloaded. Bag security check on entry."},
+        {time:"9:30am",name:"VR Lumiere de la Liberte",summary:"Do this first on entry 20 to 30 min",detail:"Immersive VR experience on entry. Do this while the Palace is quietest. Allow 20 to 30 min."},
+        {time:"10:00am",name:"Hall of Mirrors",summary:"Skip-the-line straight in",detail:"Use Coupe-File access, no queuing, walk straight in. 73 metres long, 357 mirrors, gilded ceiling."},
+        {time:"10:30am",name:"King and Queen State Apartments",summary:"Palace interior explore at leisure",detail:"The King and Queen State Apartments. Allow 1 to 1.5 hours."},
+        {time:"~12:00pm",name:"Little Train Petit Train",summary:"9 euro return full estate loop",detail:"Board the Little Train from outside the Palace. 9 euro return. Hop on and off at each stop."},
+        {time:"~12:15pm",name:"Grand Trianon",summary:"Louis XIV pink marble retreat",detail:"Built for Louis XIV as a private retreat. Pink marble colonnades, French formal gardens. Covered by Passport ticket."},
+        {time:"~12:45pm",name:"Petit Trianon",summary:"Marie Antoinette private escape",detail:"Marie Antoinette personal domain. Redesigned gardens in English style. Elegant neoclassical exterior."},
+        {time:"~1:15pm",name:"Queen Hamlet",summary:"Storybook thatched village",detail:"The Hameau de la Reine. Thatched village Marie Antoinette had built for a simple rustic life. Charming and slightly surreal. Covered by Passport ticket."},
+        {time:"~1:30pm",name:"Grand Canal Picnic",summary:"Kiosk at end of canal classic Versailles experience",detail:"Buy lunch from the kiosk at the end of the Grand Canal. Sandwiches and drinks. Find a spot by the water. Allow 45 min."},
+        {time:"~3:00pm",name:"Return to Paris",summary:"Little Train back then RER C arrive Paris 4pm",detail:"Little Train back to Palace, walk 10 min to station, RER C 35 min to Paris. BACKUP: G7 Taxi from Place d Armes if RER C not running."},
+        {time:"~4:30pm",name:"Rest at hotel",summary:"Rest before Margaux dinner",detail:"Long day on your feet. Proper rest. Smart casual dress for Margaux."},
+        {time:"7:00pm",name:"Dinner at Margaux",summary:"Eiffel Tower views book in advance",detail:"Elegant setting, classic French cuisine, Eiffel Tower views. Allow 2 hours."},
+        {time:"~9:00pm",name:"Eiffel Tower sparkles",summary:"Stroll down after dinner",detail:"Sparkle show at top of every hour from dusk. 9pm, 10pm, 11pm in September. Stand on the Champ de Mars grass and watch."}
+      ]},
 
     { date:"Sun 20 Sep", location:"Paris → Amsterdam → Viking Magni", calLabel:"Amsterdam", flag:"🇫🇷🇳🇱",
       img:"linear-gradient(160deg,#1a3d6b 0%,#0f2a4a 50%,#0a1525 100%)",heroEmoji:"🚢",heroLabel:"Paris → Amsterdam → Viking Magni",heroSub:"Eurostar 10:30 · Embark Grand European Tour",
       accommodation:"Viking Magni (embark)",
-      transport:"G7 Taxi (pre-booked) hotel → Gare du Nord dep ~08:30 | Eurostar 10:30 Paris Nord → Amsterdam Centraal arr 13:50 | Walk ~10 min Amsterdam Centraal → Viking Magni dock",
-      activity:"07:30 wake, final pack and check out. G7 Taxi pre-booked — departs hotel ~08:30 for Gare du Nord (allow extra time with luggage). Eurostar check-in by 09:00 — allow time for security, passport control and EES exit checks. Eurostar departs 10:30, arrives Amsterdam Centraal 13:50. Walk ~10 min to Viking Magni dock. Check in 14:00, settle into cabin. Canal walk 15:00–17:00. Dinner onboard 18:00. Night walk 19:45. Back to ship 21:30.",
-      excursion:"Eurostar Paris → Amsterdam 10:30 — G7 Taxi pre-booked for hotel → Gare du Nord",
+      transport:"G7 Taxi (pre-booked) hotel → Gare du Nord dep ~08:30 | Eurostar 10:25 Paris Nord → Amsterdam Centraal arr ~13:50 | Walk ~10 min Amsterdam Centraal → Viking Magni dock",
+      activity:"07:30 wake, final pack and check out. G7 Taxi pre-booked — departs hotel ~08:30 for Gare du Nord (allow extra time with luggage). Eurostar check-in by 09:00 — allow time for security, passport control and EES exit checks. Eurostar departs 10:25, arrives Amsterdam Centraal ~13:50. Walk ~10 min to Viking Magni dock. Check in 14:00, settle into cabin. Canal walk 15:00–17:00. Dinner onboard 18:00. Night walk 19:45. Back to ship 21:30.",
+      excursion:"Eurostar Paris → Amsterdam 10:25 (BOOKED ✅) — G7 Taxi pre-booked for hotel → Gare du Nord",
       tags:[],
       links:[
-        {label:"Book Eurostar", url:"https://www.eurostar.com/uk-en/train/france-to-netherlands/paris-to-amsterdam", type:"ticket"},
-        {label:"Gare du Nord Info", url:"https://www.eurostar.com/uk-en/stations/paris-nord", type:"info"}
-      ] }
-  ]},
+        {label:"Eurostar Website", url:"https://www.eurostar.com/", type:"info"},
+        {label:"Gare du Nord Info", url:"https://www.gares-sncf.com/en/station/frpno/paris-nord", type:"info"}
+      ] ,
+      stops:[
+        {time:"8:00am",name:"Maison Gregoire breakfast",summary:"69 Rue Monge — on your street — opens 8am Sunday",detail:"Maison Gregoire at 69 Rue Monge is literally around the corner from the hotel. Excellent organic sourdough bread, pain au raisin, croissants, pastries. A couple of tables out front or take away. Open from 8am Sunday. Buy breakfast here and pick up provisions for the train — a baguette sandwich, pastries, something for the 2 hour journey to Amsterdam."},
+        {time:"8:45am",name:"Final pack and check out",summary:"Leave bags at reception if needed",detail:"Check out of Le Jardin de Verre. G7 Taxi pre-booked for 9:30am. Bags at reception if needed. Have euros for any final tips or purchases."},
+        {time:"9:30am",name:"G7 Taxi to Gare du Nord",summary:"Pre-booked — approximately 15 min",detail:"Direct to Gare du Nord. Aim to arrive by 10:00am. No passport control on Paris to Amsterdam Eurostar (intra-Schengen route) — just a ticket check and security. Check in only 20 minutes before departure."},
+        {time:"10:00am",name:"Gare du Nord Eurostar checkin",summary:"No passport control — ticket check and security only",detail:"Paris to Amsterdam is intra-Schengen so no passport control required. Simply check in at the Eurostar desk, pass through security screening and find your carriage. Much simpler than the London service. Platform announced approximately 15 min before departure."},
+        {time:"10:25am",name:"Eurostar departs Paris Nord",summary:"Paris to Amsterdam Centraal — BOOKED",detail:"Arrives Amsterdam Centraal approximately 1:50pm. Seats confirmed. Eat your Maison Gregoire provisions on the train. The journey passes through Belgium — look out for Antwerp and Rotterdam. A thoroughly civilised way to travel."},
+        {time:"~1:50pm",name:"Arrive Amsterdam Centraal",summary:"Walk 10 min to Viking Magni dock",detail:"Walk approximately 10 min to Viking Magni dock on the IJ waterfront. Viking Magni check in from 2pm."},
+        {time:"2:00pm",name:"Board Viking Magni",summary:"Check in settle in — 13 nights begins",detail:"Check in, meet cabin steward, unpack properly — you are here 13 nights. Safety briefing in the afternoon. The river cruise adventure begins."},
+        {time:"~4:00pm",name:"Rest and settle in",summary:"Explore the ship find the bar",detail:"Get your bearings on Viking Magni. Explore the ship, find the lounge, the Sun Deck, the restaurant. Rest if needed. Dinner on board in the evening."},
+        {time:"~8:00pm",name:"Evening Amsterdam walk — De Wallen",summary:"10 min walk from ship to the old centre",detail:"Amsterdam Centraal is 10 min walk from the ship. Head into the old centre for an evening walk through De Wallen, the Red Light District. One of the most atmospheric and historically fascinating parts of any European city."},
+        {time:"8:10pm",name:"Zeedijk — Chinatown gateway",summary:"Start here from the station end",detail:"Zeedijk runs from Amsterdam Centraal into De Wallen and doubles as the city Chinatown. Excellent noodle bars, Chinese bakeries, Dutch brown cafes. A great atmospheric entry point."},
+        {time:"8:20pm",name:"Oudezijds Voorburgwal canal",summary:"Main canal street of De Wallen",detail:"The primary canal street of the Red Light District. Medieval houses leaning over the water, canal boats, bridge views. The atmosphere at night with red neon reflecting on the canals is extraordinary. Walk south toward the Oude Kerk."},
+        {time:"8:35pm",name:"Oude Kerk",summary:"Amsterdam oldest building — heart of De Wallen",detail:"The Oude Kerk (Old Church) dates from the 1300s and sits at the heart of De Wallen, surrounded by the red light windows. The juxtaposition is striking and very Amsterdam. Walk around the exterior for free at any hour."},
+        {time:"8:45pm",name:"Oudezijds Achterburgwal",summary:"Heart of the red light area — canal with atmosphere",detail:"The parallel canal street east of Oudezijds Voorburgwal. Walk respectfully — NO photography of workers, strictly enforced. The area is well policed and very safe."},
+        {time:"9:15pm",name:"Warmoesstraat — a drink",summary:"Main street with bars cafes and local atmosphere",detail:"Warmoesstraat is the main pedestrian street through De Wallen with a good mix of bars, cafes and restaurants. Stop for a drink at one of the traditional Dutch brown cafes — Heineken on tap, warm lighting, local crowd."},
+        {time:"9:45pm",name:"Walk back to Viking Magni",summary:"Back on board by 10pm",detail:"Walk back along the IJ waterfront from Amsterdam Centraal to the Viking Magni dock. Approximately 10 min. Back on board by 10pm as planned. A perfect first taste of Amsterdam before the ship moves on."}
+      ]}
+  ],
+      stops:[
+        {time:"~7:00am",name:"Arrive Paris CDG",summary:"Welcome Pickups transfer to hotel",detail:"EES biometric processing on arrival. Welcome Pickups driver meets you. Transfer to Le Jardin de Verre approximately 45 min. Paris City Tax AUD approximately 117 on check-in, have EUR on Wise card."},
+        {time:"~11:00am",name:"Bags dropped at hotel",summary:"Freshen up and get oriented",detail:"Check-in from 3pm but bags can be dropped earlier. Freshen up and change clothes."},
+        {time:"~11:15am",name:"Place Monge Market",summary:"Wed open 7:30am to 12pm",detail:"If bags dropped in time, head to Place Monge for premium produce, cheese, fresh seafood, flowers. EUR cash for small purchases. Closes noon."},
+        {time:"~11:45am",name:"Rue Mouffetard",summary:"Crepe lunch on medieval street",detail:"Head north up La Mouffe. One of the oldest streets in Paris, medieval cobblestones. Grab a crepe from a street vendor for a light lunch."},
+        {time:"~12:15pm",name:"Pantheon",summary:"Neoclassical dome exterior free",detail:"Magnificent neoclassical dome, free to admire from outside. Marie Curie, Victor Hugo and Alexandre Dumas buried inside, crypt entry 13 euro. May be free on European Heritage Days. Allow 10 to 15 min."},
+        {time:"~12:30pm",name:"Rue Soufflot snack stop",summary:"Pick up a sweet snack for the gardens",detail:"Rue Soufflot runs directly west from the Pantheon to the Luxembourg Gardens entrance. Pick up a pastry from a cafe or patisserie on the way through."},
+        {time:"~12:45pm",name:"Jardin du Luxembourg",summary:"Green chairs Medici Fountain picnic",detail:"Find a green chair by the octagonal fountain and breathe it all in. This is where you truly arrive in Paris. Seek out the Medici Fountain on the east side, a 17th century grotto fountain in a long shaded pool. Enjoy your snack here. Allow 25 to 35 min."},
+        {time:"~1:30pm",name:"Pharmacie Place Monge",summary:"Toiletries for the trip on the way back",detail:"Stock up on deodorant, sunscreen and toothpaste. Dispose of what remains in Istanbul before the flight home."},
+        {time:"~2:00pm",name:"Rest at hotel",summary:"Long rest before the evening",detail:"You have been travelling 30+ hours. A proper rest now means you enjoy the evening. Set an alarm for 5:30pm."},
+        {time:"6:00pm",name:"Dinner Place de la Contrescarpe",summary:"2 min walk from hotel",detail:"Place de la Contrescarpe is 2 minutes from the hotel. Choose whichever bistro or terrace looks good. Nothing heavy. Back at hotel by 7:30pm."},
+        {time:"8:00pm",name:"2CV Legendary Paris Night Tour",summary:"Hotel pickup 2.5 hrs home 10:30pm BOOKED",detail:"2CV Legendary Paris Night Tour departs from hotel. 2.5 hours covering city lights, Seine bridges, Eiffel Tower illuminated, Montmartre and Sacre-Coeur at night. Dropped back at hotel 10:30pm."}
+      ]},
 
   { id:"magni", name:"Viking Magni", emoji:"🚢", color:"#1a5c3a", days:[
     { date:"Mon 21 Sep", location:"Kinderdijk, Netherlands", flag:"🇳🇱",
@@ -482,7 +606,7 @@ const SEGMENTS = [
       accommodation:"Viking Magni", transport:"Ship docks Regensburg",
       activity:"UNESCO-listed 2,000-year-old medieval city. Roman structures, 13th–14th century patrician houses, famous Stone Bridge, St. Peter's Cathedral. Visit Alte Würstküche – Germany's oldest restaurant (since 1146) for famous grilled Danube sausages.",
       excursion:"✅ INCLUDED: Regensburg Through History guided tour (UNESCO) | Alte Würstküche", tags:["included"],
-      links:[{label:"Alte Würstküche", url:"https://www.alte-wurstkuch.de/en", type:"rest"},
+      links:[{label:"Alte Würstküche", url:"https://www.alte-wurstkueche.de/en/", type:"rest"},
              {label:"UNESCO Regensburg", url:"https://www.regensburg.de/tourismus/en/", type:"info"}] },
 
     { date:"Tue 29 Sep", location:"Passau, Germany", flag:"🇩🇪",
@@ -490,7 +614,7 @@ const SEGMENTS = [
       accommodation:"Viking Magni", transport:"Ship docks at three-rivers confluence",
       activity:"Where three rivers meet: Inn, Ilz and Danube. Dom St. Stephan with Europe's largest cathedral organ (17,774 pipes!). Old Town patrician architecture. Evening organ concert (May–Oct, not Sundays).",
       excursion:"✅ INCLUDED: Passau Old Town & Cathedral | Evening organ concert", tags:["included"],
-      links:[{label:"Dom St. Stephan", url:"https://www.bistum-passau.de/dom/", type:"info"}] },
+      links:[{label:"Dom St. Stephan", url:"https://www.passau.de/tourismus/sehenswertes/dom-st-stephan/", type:"info"}] },
 
     { date:"Wed 30 Sep", location:"Melk & Krems, Austria", flag:"🇦🇹",
       img:"linear-gradient(160deg,#4a3d1a 0%,#2d250f 50%,#1a150a 100%)",heroEmoji:"⛪",heroLabel:"Melk Abbey & Krems, Austria",heroSub:"900-year Benedictine Abbey · Wachau Valley Wine",
@@ -514,7 +638,7 @@ const SEGMENTS = [
       activity:"Second day in Vienna. Belvedere Gallery (Klimt's The Kiss). Vienna's legendary café culture: Café Central or Demel. Prater park and Giant Ferris Wheel. Naschmarkt food market. Optional: Spanish Riding School.",
       excursion:"✅ INCLUDED: Vienna leisure day – Belvedere, café culture & museum mile", tags:["included"],
       links:[{label:"Belvedere Museum", url:"https://www.belvedere.at/en/", type:"info"},
-             {label:"Naschmarkt Info", url:"https://www.wiener-naschmarkt.eu/en/", type:"info"}] },
+             {label:"Naschmarkt Info", url:"https://www.wien.info/en/sightseeing/markets/naschmarkt", type:"info"}] },
 
     { date:"Sat 03 Oct", location:"Budapest (arrive on Magni)", flag:"🇭🇺",
       img:"linear-gradient(160deg,#6b3a1a 0%,#3a1a0f 50%,#200f0a 100%)",heroEmoji:"🏰",heroLabel:"Budapest, Hungary",heroSub:"Fisherman's Bastion · Castle District · Chain Bridge",
@@ -523,8 +647,23 @@ const SEGMENTS = [
       excursion:"✅ INCLUDED: Budapest – Buda Castle District, Fisherman's Bastion & Andrássy Avenue", tags:["included"],
       links:[{label:"Fishermans Bastion", url:"https://halaszbastya.eu/en/", type:"info"},
              {label:"Szimpla Kert Ruin Bar", url:"https://szimpla.hu/", type:"info"},
-             {label:"Buda Castle", url:"https://www.budacastlebudapest.com/", type:"info"}] }
-  ]},
+             {label:"Buda Castle", url:"https://www.budacastlebudapest.com/", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Viking Panoramic Budapest Excursion",summary:"Included Viking tour — Andrassy Ave, Heroes Square, Buda Castle",detail:"Viking included panoramic excursion covering the key Budapest highlights. Andrassy Avenue (UNESCO listed grand boulevard), the magnificent Opera House exterior, Heroes Square with the Millennium Monument, and Buda Castle on the hilltop with sweeping views across the Danube to Pest. Check Viking schedule for exact timing."},
+        {time:"~1:00pm",name:"Lunch on Viking Magni",summary:"Back on board after excursion",detail:"Return to the ship for lunch after the morning excursion."},
+        {time:"~2:00pm",name:"Jewish Quarter — 7th district",summary:"Explore Erzsebetvaros independently",detail:"Head into the 7th district Jewish Quarter independently — one of the most atmospheric neighbourhoods in Budapest. Grand faded architecture, street art, independent cafes and bars. Walk Kazinczy utca and Dob utca for the full flavour."},
+        {time:"~3:00pm",name:"Szimpla Kert Ruin Bar",summary:"Budapest most famous ruin bar — Kazinczy utca 14",detail:"Szimpla Kert at Kazinczy utca 14 is the original Budapest ruin bar — a derelict apartment building transformed into a sprawling bar with mismatched furniture, quirky art installations and an extraordinary atmosphere. Open from noon daily. Try a Palinka (Hungarian fruit brandy) while you are there."},
+        {time:"~4:30pm",name:"Dohany Street Synagogue exterior",summary:"Largest synagogue in Europe — worth a look from outside",detail:"The Dohany Street Synagogue on Dohany utca is the largest in Europe. Moorish-Byzantine architecture, twin towers, and the memorial garden behind with the Emanuel Tree (weeping willow memorial with victims names inscribed on the leaves). Entry available if energy allows."},
+        {time:"~5:30pm",name:"Walk back to Viking Magni",summary:"Return to ship for evening",detail:"Walk back to the Viking Magni dock. The Danube riverbank walk is beautiful in the late afternoon light."},
+        {time:"Evening",name:"Dinner on Viking Magni",summary:"Last night on the river cruise",detail:"Dinner on board Viking Magni. This is the final night on the river cruise — 13 nights from Amsterdam through Germany, Austria and into Hungary. A significant milestone in the trip."}
+      ]}
+  ],
+      stops:[
+        {time:"Morning",name:"Viking Excursion Budapest",summary:"Andrassy Ave Heroes Square Buda Castle",detail:"Viking included excursion. Andrassy Avenue, Heroes Square with the Millennium Monument, and Buda Castle on the hilltop with Danube views."},
+        {time:"~2:00pm",name:"Jewish Quarter",summary:"7th district atmospheric neighbourhood",detail:"Head into the 7th district Jewish Quarter independently. Grand faded architecture, street art, independent cafes and bars."},
+        {time:"~3:00pm",name:"Szimpla Kert Ruin Bar",summary:"Budapest most famous ruin bar",detail:"Szimpla Kert at Kazinczy utca 14. The original Budapest ruin bar. Open from 12pm daily."},
+        {time:"Evening",name:"Dinner on Viking Magni",summary:"Last night on the river cruise",detail:"Return to the ship for dinner. Final evening on Viking Magni."}
+      ]},
 
   { id:"budapest", name:"Budapest", emoji:"🏛️", color:"#7c3d8f", days:[
     { date:"Sun 04 Oct", location:"Budapest – Disembarkation Day", flag:"🇭🇺",
@@ -534,7 +673,16 @@ const SEGMENTS = [
       excursion:null, tags:[],
       links:[{label:"Great Market Hall", url:"https://www.piaconline.hu/en/", type:"info"},
              {label:"Danube Night Cruise", url:"https://www.legenda.hu/en/", type:"book"},
-             {label:"Shoes on the Danube", url:"https://maps.app.goo.gl/Y6UGzq5D4q8Hk8MN7", type:"info"}] },
+             {label:"Shoes on the Danube", url:"https://maps.app.goo.gl/Y6UGzq5D4q8Hk8MN7", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Disembark Viking Magni",summary:"Walk 1.5km flat to 7Seasons Apartments",detail:"Disembark with all luggage. Walk approximately 1.5km flat from dock to 7Seasons Apartments, Kiraly utca."},
+        {time:"~10:00am",name:"Check in 7Seasons Apartments",summary:"Kiraly utca conf 6515.250.274",detail:"Deluxe One-Bedroom apartment. Check-in from 3pm but bags can be stored. Have HUF on Wise card for city tax."},
+        {time:"~11:00am",name:"Great Market Hall",summary:"Budapest famous covered market",detail:"Nagy Vasarcsarnok on Fovam ter. Three levels. Fresh produce, Hungarian specialties, paprika, salami, folk crafts. 15 min walk from 7Seasons."},
+        {time:"~12:30pm",name:"Shoes on the Danube",summary:"Moving Holocaust memorial on the riverbank",detail:"60 pairs of iron shoes on the Danube bank commemorating Jews shot into the river during WWII. Simple, powerful, moving. Free."},
+        {time:"~1:00pm",name:"Parliament riverbank",summary:"Most spectacular Parliament building in the world",detail:"The Hungarian Parliament. Neo-Gothic, 96 metres tall, 691 rooms. Best viewed from the Pest riverbank."},
+        {time:"~2:00pm",name:"Lunch and explore Pest",summary:"Riverside cafes and streets",detail:"Find lunch along the riverbank or back in the city. Explore at leisure."},
+        {time:"~8:00pm",name:"Danube Night Cruise optional",summary:"Legenda City Cruises book in advance",detail:"Bridges and Parliament lit up at night from the river. One of the great Budapest experiences. Book at legenda.hu."}
+      ]},
 
     { date:"Mon 05 Oct", location:"Budapest – Flexible Rest Day", flag:"🇭🇺",
       img:"linear-gradient(160deg,#1a3a6b 0%,#0f1a3a 50%,#0a0f25 100%)",heroEmoji:"⛰️",heroLabel:"Budapest – Rest Day",heroSub:"Gellért Hill · Kazinczy Street · Wander at Will",
@@ -543,24 +691,68 @@ const SEGMENTS = [
       excursion:null, tags:[],
       links:[{label:"Dohany Street Synagogue", url:"https://www.dohanystreetsynagogue.hu/en/", type:"info"},
              {label:"Danube Night Cruise", url:"https://www.legenda.hu/en/", type:"book"},
-             {label:"Gellert Hill Info", url:"https://www.budapestinfo.hu/gellert-hill", type:"info"}] }
-  ]},
+             {label:"Gellert Hill Info", url:"https://www.budapest.com/city_guide/sights/gellert_hill.en.html", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Rest and recharge",summary:"Flexible start — no fixed plan",detail:"No fixed agenda today. A good opportunity to sleep in, do laundry, write postcards, charge devices and recharge before the travel day tomorrow."},
+        {time:"Option A",name:"Gellert Hill and Citadella",summary:"Best panoramic views over Budapest",detail:"Gellert Hill rises 235 metres above the Danube — the Citadella fortress at the top gives panoramic views over the entire city, both banks of the Danube and all seven bridges. Take the tram to the base then walk up (30 to 45 min). Free to enter the hilltop area."},
+        {time:"Option B",name:"Dohany Street Synagogue interior",summary:"Largest synagogue in Europe — book in advance",detail:"The Dohany Street Synagogue interior is extraordinary — Moorish-Byzantine decoration, organ where Franz Liszt once played, the museum, and the Emanuel Tree memorial garden. Book tickets in advance. Allow 1 to 1.5 hours."},
+        {time:"Option C",name:"Szechenyi Thermal Baths",summary:"Budapest famous outdoor thermal pools",detail:"Szechenyi Thermal Baths in City Park are the most famous in Budapest — grand neo-baroque building with outdoor pools, indoor pools, steam rooms and saunas. A quintessential Budapest experience. Buy tickets online. Allow 2 to 3 hours. Bring a towel or rent one there."},
+        {time:"Option D",name:"Great Market Hall revisit",summary:"Pick up Hungarian food souvenirs",detail:"Worth a second browse of the Nagy Vasarcsarnok — paprika (best on the upper level), Pick salami, Tokaji wine, lace tablecloths. The upper level has tourist-oriented stalls but the ground floor is still very local."},
+        {time:"Lunchtime",name:"Lunch in the city",summary:"Explore cafes and restaurants at leisure",detail:"The Jewish Quarter has excellent cafes and lunch spots. Or head to the Great Market Hall upper level for a langos (deep fried dough with sour cream and cheese) — classic Hungarian street food."},
+        {time:"~6:00pm",name:"Final Budapest dinner",summary:"Last evening before the travel day",detail:"Try Mazel Tov (Akacfa utca 47) for Middle Eastern sharing plates in a stunning open courtyard, or Macesz Bistro (Dob utca 26) for modern Hungarian-Jewish cuisine. Both are in the Jewish Quarter and both excellent."},
+        {time:"~9:00pm",name:"Early night — pack tonight",summary:"Private transfer at 8am tomorrow",detail:"Pack properly tonight. Early start tomorrow — private transfer from 7Seasons to Budapest Airport BUD at approximately 8am for OS632 departing 11:15am. Confirm pickup time with your transfer provider this evening."}
+      ]}
+  ],
+      stops:[
+        {time:"Morning",name:"Disembark Viking Magni",summary:"Walk 1.5km flat to 7Seasons Apartments",detail:"Disembark with all luggage. Walk approximately 1.5km flat from dock to 7Seasons Apartments, Kiraly utca."},
+        {time:"~10:00am",name:"Check in 7Seasons Apartments",summary:"Kiraly utca conf 6515.250.274",detail:"Deluxe One-Bedroom apartment. Check-in from 3pm but bags can be stored. Have HUF on Wise card for city tax."},
+        {time:"~11:00am",name:"Great Market Hall",summary:"Budapest famous covered market",detail:"Nagy Vasarcsarnok on Fovam ter. Three levels. Fresh produce, Hungarian specialties, paprika, salami, folk crafts. 15 min walk from 7Seasons."},
+        {time:"~12:30pm",name:"Shoes on the Danube",summary:"Moving Holocaust memorial on the riverbank",detail:"60 pairs of iron shoes on the Danube bank commemorating Jews shot into the river during WWII. Simple, powerful, moving. Free."},
+        {time:"~1:00pm",name:"Parliament riverbank",summary:"Most spectacular Parliament building in the world",detail:"The Hungarian Parliament. Neo-Gothic, 96 metres tall, 691 rooms. Best viewed from the Pest riverbank."},
+        {time:"~2:00pm",name:"Lunch and explore Pest",summary:"Riverside cafes and streets",detail:"Find lunch along the riverbank or back in the city. Explore at leisure."},
+        {time:"~8:00pm",name:"Danube Night Cruise optional",summary:"Legenda City Cruises book in advance",detail:"Bridges and Parliament lit up at night from the river. One of the great Budapest experiences. Book at legenda.hu."}
+      ]},
 
   { id:"transit", name:"To Italy", emoji:"🛫", color:"#4a5568", days:[
     { date:"Tue 06 Oct", location:"Budapest → Venice → Chioggia", calLabel:"Chioggia", flag:"🇭🇺🇮🇹",
       img:"linear-gradient(160deg,#1a5c5c 0%,#0f3a3a 50%,#0a2020 100%)",heroEmoji:"⚓",heroLabel:"Budapest → Venice → Chioggia",heroSub:"Austrian Air OS543 · Hotel Grande Italia",
-      accommodation:"Hotel Grande Italia, Chioggia — Superior Double or Twin Room", transport:"Walk disembarkation dock → 7Seasons Apartments (~1.5km flat) | Daytrip 7Seasons → Budapest Airport BUD dep ~08:00 | OS632 Budapest→Vienna dep 11:15 ref DQXON9 | OS543 Vienna→Venice dep 12:50 arr 13:55 | Daytrip Venice Marco Polo → Hotel Grande Italia Chioggia (~1hr)",
-      activity:"Early morning: walk from disembarkation dock to 7Seasons Apartments (~1.5km flat, final bag collection). Daytrip picks up ~08:00 for Budapest Airport BUD. OS632 departs 11:15am to Vienna, connecting to OS543 dep 12:50 arriving Venice Marco Polo 13:55. Daytrip transfer (~1hr) to Hotel Grande Italia, Chioggia. Check in, evening stroll along Corso del Popolo, canals and harbour cafes. Board Viking Sky tomorrow morning.",
+      accommodation:"Hotel Grande Italia, Chioggia — Superior Double or Twin Room", transport:"Walk disembarkation dock → 7Seasons Apartments (~1.5km flat) | Private transfer 7Seasons → Budapest Airport BUD dep ~08:00 | OS632 Budapest→Vienna dep 11:15 ref DQXON9 | OS543 Vienna→Venice dep 12:50 arr 13:55 | Private transfer Venice Marco Polo → Hotel Grande Italia Chioggia (~1hr)",
+      activity:"Early morning: walk from disembarkation dock to 7Seasons Apartments (~1.5km flat, final bag collection). Private transfer picks up ~08:00 for Budapest Airport BUD. OS632 departs 11:15am to Vienna, connecting to OS543 dep 12:50 arriving Venice Marco Polo 13:55. Private transfer (~1hr) to Hotel Grande Italia, Chioggia. Check in, evening stroll along Corso del Popolo, canals and harbour cafes. Board Viking Sky tomorrow morning.",
       excursion:null, tags:["flight"],
-      links:[{label:"Hotel Grande Italia", url:"https://www.hotelgrandeitalia.it/en/", type:"book"}] }
-  ]},
+      links:[{label:"Hotel Grande Italia", url:"https://www.hotelgrandeitalia.it/en/", type:"book"}] ,
+      stops:[
+        {time:"~7:30am",name:"Check out of 7Seasons",summary:"Private transfer departs ~8:00am",detail:"Check out of 7Seasons Apartments. Private transfer from Kiraly utca to Budapest Airport BUD. Allow 30 to 40 min to the airport. Confirm pickup time the evening before."},
+        {time:"11:15am",name:"OS632 Budapest to Vienna",summary:"Austrian Airlines — ref DQXON9",detail:"OS632 departs Budapest 11:15am, arrives Vienna approximately 12:05pm. Short 50 min hop. Austrian Airlines ref DQXON9 — select seats in advance at austrian.com. Vienna airport (VIE) is clean and easy to navigate for the connection."},
+        {time:"12:50pm",name:"OS543 Vienna to Venice",summary:"Arrives Venice Marco Polo 13:55",detail:"OS543 departs Vienna 12:50pm, arrives Venice Marco Polo Airport (VCE) 13:55. Short connecting flight. Marco Polo Airport is on the edge of the Venice lagoon. Your private transfer meets you in arrivals."},
+        {time:"~2:30pm",name:"Private transfer to Hotel Grande Italia Chioggia",summary:"Approximately 1 hour from Marco Polo",detail:"Private transfer from Venice Marco Polo Airport to Hotel Grande Italia, Corso del Popolo, Chioggia. Approximately 1 hour. Chioggia is at the southern end of the Venice lagoon, known as Little Venice."},
+        {time:"~4:00pm",name:"Check in Hotel Grande Italia",summary:"Superior Double or Twin Room — Corso del Popolo",detail:"Hotel Grande Italia is on the main pedestrian street Corso del Popolo in the heart of Chioggia. Ask the hotel about tomorrow morning transfer to the Viking Sky embarkation dock — they are very familiar with Viking passengers."},
+        {time:"~5:00pm",name:"Explore Chioggia — Little Venice",summary:"Canals fishing boats Corso del Popolo",detail:"Chioggia (pronounced Kyo-ja) is a fishing town on a long thin island at the southern tip of the Venice lagoon. The pedestrian Corso del Popolo is the vibrant main street. Explore the covered fish market near Ponte Vigo, the canal bridges, the colourful fishing boats, and the Venetian Gothic architecture. Genuinely charming."},
+        {time:"~7:00pm",name:"Dinner in Chioggia",summary:"Fresh seafood at a local trattoria",detail:"Chioggia is a working fishing port — the seafood is outstanding and reasonably priced. Ask the hotel for a recommendation. A simple trattoria serving grilled branzino, spaghetti alle vongole or fritto misto is ideal. An early night is wise — Viking Sky embarkation tomorrow."}
+      ]}
+  ],
+      stops:[
+        {time:"~7:30am",name:"Check out 7Seasons",summary:"Private transfer departs 8:00am",detail:"Check out, private transfer from Kiraly utca to Budapest Airport BUD. Depart approximately 8am for OS632 at 11:15am."},
+        {time:"11:15am",name:"OS632 Budapest to Vienna",summary:"Austrian Airlines ref DQXON9",detail:"OS632 departs Budapest 11:15am, arrives Vienna approximately 12:05pm. Austrian Airlines ref DQXON9. Select seats at austrian.com before departure."},
+        {time:"12:50pm",name:"OS543 Vienna to Venice",summary:"Arrives Venice Marco Polo 13:55",detail:"OS543 departs Vienna 12:50pm, arrives Venice Marco Polo 13:55. Short connecting flight."},
+        {time:"~2:30pm",name:"Private transfer to Hotel Grande Italia Chioggia",summary:"Approximately 1 hour from Marco Polo",detail:"Private transfer from Venice Marco Polo Airport to Hotel Grande Italia, Chioggia. Approximately 1 hour."},
+        {time:"~4:00pm",name:"Check in Hotel Grande Italia",summary:"Superior Double or Twin Room",detail:"Hotel Grande Italia, Corso del Popolo, Chioggia. Ask hotel about transfer to Viking Sky dock tomorrow."},
+        {time:"Evening",name:"Explore Chioggia",summary:"Corso del Popolo canals fishing harbour",detail:"Little Venice. Canals, fishing boats, pedestrian main street. Dinner at a local trattoria. Fresh seafood is the specialty."}
+      ]},
 
   { id:"sky", name:"Viking Sky", emoji:"⚓", color:"#8b2635", days:[
     { date:"Wed 07 Oct", location:"Chioggia – Embark Viking Sky", calLabel:"Venice", flag:"🇮🇹",
       img:"linear-gradient(160deg,#1a4a5c 0%,#0f2d3a 50%,#0a1520 100%)",heroEmoji:"🛳️",heroLabel:"Chioggia – Embark Viking Sky",heroSub:"Ancient Adriatic Treasures · Venice Lagoon",
       accommodation:"Viking Sky", transport:"Local transfer Hotel Grande Italia → Viking Sky embarkation dock Chioggia (arranged via hotel)",
       activity:"Local transfer from Hotel Grande Italia to Viking Sky dock (arranged by hotel — they are familiar with Viking passengers). Embark Viking Sky, settle into stateroom. Explore Chioggia's canals, fishing boats and lively Corso del Popolo. 'Little Venice' at the southern tip of the Venetian Lagoon, steeped in seafaring tradition.",
-      excursion:"✅ INCLUDED: Chioggia – Venetian Lagoon fishing village orientation", tags:["included"], links:[] },
+      excursion:"✅ INCLUDED: Chioggia – Venetian Lagoon fishing village orientation", tags:["included"], links:[] ,
+      stops:[
+        {time:"Morning",name:"Breakfast at Hotel Grande Italia",summary:"Final hotel breakfast before the ocean cruise",detail:"Enjoy a relaxed hotel breakfast before checking out. Confirm Viking Sky embarkation timing with the hotel."},
+        {time:"~10:00am",name:"Check out and transfer to Viking Sky",summary:"Hotel arranged local transfer to dock",detail:"Hotel Grande Italia arranges local transfer to the Viking Sky embarkation dock in Chioggia. The hotel is very familiar with Viking passengers. Confirm timing the evening before."},
+        {time:"Late morning",name:"Board Viking Sky",summary:"Embark — settle into stateroom — 14 nights begins",detail:"Board Viking Sky and meet your cabin steward. Unpack properly — you are here 14 nights. This is a larger ship than Viking Magni. Key spaces: the Torshavn bar, the Explorer Lounge, the World Cafe, the main Restaurant, the Aquavit Terrace at the stern, the Pool Deck. Free professional laundry service available throughout."},
+        {time:"Afternoon",name:"Explore Chioggia (optional)",summary:"Last look at Little Venice before departure",detail:"If embarkation is early enough, head back into Chioggia for a final wander before the ship departs. The fish market and the canal bridges are particularly atmospheric in the afternoon."},
+        {time:"~4:00pm",name:"Safety drill and ship orientation",summary:"Mandatory muster drill — learn where everything is",detail:"Viking Sky will conduct a mandatory safety muster drill before departure. Find your muster station, learn the safety procedures and get properly oriented on the ship."},
+        {time:"Evening",name:"Viking Sky departs Chioggia",summary:"First dinner on board — ocean cruise begins",detail:"Viking Sky departs Chioggia and heads south into the Adriatic. First dinner on board — settle in, meet fellow passengers. The 14-night Mediterranean adventure has begun. Next stop: Zadar, Croatia."}
+      ]},
 
     { date:"Thu 08 Oct", location:"Venice, Italy", calLabel:"Venice", flag:"🇮🇹",
       img:"linear-gradient(160deg,#1a2d5c 0%,#0f1a3a 50%,#0a1025 100%)",heroEmoji:"🚣",heroLabel:"Venice, Italy",heroSub:"St Mark's · Doge's Palace · Rialto Bridge",
@@ -582,8 +774,8 @@ const SEGMENTS = [
       accommodation:"Viking Sky", transport:"Ship docks Dubrovnik",
       activity:"Walk the complete 2km city wall circuit for magnificent Adriatic views (UNESCO). Stradun main street. Rector's Palace. Franciscan Monastery (oldest pharmacy in Europe, since 1317). Optional: cable car to Mount Srđ for panoramic views.",
       excursion:"✅ INCLUDED: Dubrovnik Old Town walls & historic streets (UNESCO)", tags:["included"],
-      links:[{label:"Dubrovnik City Walls", url:"https://www.dubrovnik-info.hr/en/old-town/city-walls", type:"info"},
-             {label:"Visit Dubrovnik", url:"https://www.dubrovnik-info.hr/en/", type:"info"}] },
+      links:[{label:"Dubrovnik City Walls", url:"https://www.dubrovnik-tourist.com/en/sights/city-walls", type:"info"},
+             {label:"Visit Dubrovnik", url:"https://www.dubrovnik-tourist.com/en/", type:"info"}] },
 
     { date:"Sun 11 Oct", location:"Kotor, Montenegro", flag:"🇲🇪",
       img:"linear-gradient(160deg,#2d1a5c 0%,#1a0f3a 50%,#0f0a20 100%)",heroEmoji:"⛵",heroLabel:"Kotor, Montenegro",heroSub:"Bay of Kotor · UNESCO Old Town · Mountain Fortress",
@@ -628,7 +820,7 @@ const SEGMENTS = [
       activity:"Home to Europe's earliest civilisation – the Minoans. Palace of Knossos – 3,500-year-old Bronze Age labyrinthine complex. Heraklion Archaeological Museum with famous Minoan frescoes. Venetian harbour walls & Koules Fortress.",
       excursion:"✅ INCLUDED: Crete – Minoan Palace of Knossos & Archaeological Museum", tags:["included"],
       links:[{label:"Knossos Palace Info", url:"https://www.culture.gov.gr/en/", type:"info"},
-             {label:"Heraklion Archaeological Museum", url:"https://www.heraklionarchaeologicalmuseum.gr/en/", type:"info"}] },
+             {label:"Heraklion Archaeological Museum", url:"https://odysseus.culture.gr/h/1/gh151.jsp?obj_id=3373", type:"info"}] },
 
     { date:"Sat 17 Oct", location:"Rhodes, Greece", flag:"🇬🇷",
       img:"linear-gradient(160deg,#1a4a5c 0%,#0f2d3a 50%,#0a1520 100%)",heroEmoji:"🗡️",heroLabel:"Rhodes, Greece",heroSub:"UNESCO Medieval Town · Palace of Grand Masters",
@@ -642,24 +834,44 @@ const SEGMENTS = [
       accommodation:"Viking Sky", transport:"Ship docks Kuşadası | Coach to Ephesus (30 min)",
       activity:"One of antiquity's best-preserved cities. Library of Celsus towering 2nd-century façade. Great Theatre (25,000 seats). Temple of Hadrian. Terrace Houses with stunning frescoes (extra fee). Seven Wonders' Temple of Artemis site nearby.",
       excursion:"✅ INCLUDED: Ancient Ephesus – Library of Celsus & Great Theatre", tags:["included"],
-      links:[{label:"Ephesus Info", url:"https://www.kusadasiport.com/ephesus-turkey", type:"info"}] },
+      links:[{label:"Ephesus Info", url:"https://www.ephesus.us/", type:"info"}] },
 
     { date:"Mon 19 Oct", location:"Troy / Çanakkale, Turkey", flag:"🇹🇷",
       img:"linear-gradient(160deg,#4a3a1a 0%,#2d200f 50%,#1a100a 100%)",heroEmoji:"🐎",heroLabel:"Troy & Gallipoli, Turkey",heroSub:"Trojan Horse · ANZAC Cove · Gallipoli Memorial",
       accommodation:"Viking Sky", transport:"Ship docks Çanakkale",
       activity:"Ancient Troy (UNESCO) – Homer's legendary city. Famous Trojan Horse replica. Troy Archaeological Museum (opened 2018). Then Gallipoli battlefields & ANZAC memorials – deeply moving WWI sites: Anzac Cove, Lone Pine, Chunuk Bair. Significant for Australians.",
       excursion:"⭐ VIKING EXCURSION BOOKED: Troy UNESCO ruins & Gallipoli ANZAC memorial sites", tags:["booked"],
-      links:[{label:"Troy UNESCO Site", url:"https://www.muze.gov.tr/en/muzeler/troy-museum", type:"info"},
-             {label:"Gallipoli Anzac Info", url:"https://www.awm.gov.au/articles/encyclopedia/gallipoli", type:"info"}] },
+      links:[{label:"Troy UNESCO Site", url:"https://www.heritagedaily.com/2019/04/troy/123936", type:"info"},
+             {label:"Gallipoli Anzac Info", url:"https://www.awm.gov.au/articles/encyclopedia/gallipoli", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Check out and transfer to Viking Sky",summary:"Hotel arranged local transfer to dock",detail:"Hotel Grande Italia arranges local transfer to Viking Sky dock. Confirm timing with hotel the evening before."},
+        {time:"Late morning",name:"Board Viking Sky",summary:"Embark settle into stateroom",detail:"Board Viking Sky, meet cabin steward, unpack properly. 14 nights on board. Free professional laundry service throughout. Explore the ship."},
+        {time:"Afternoon",name:"Explore Chioggia optional",summary:"Last chance before departure",detail:"If embarkation is early, explore Chioggia canals, fishing boats and Corso del Popolo before the ship departs."},
+        {time:"Evening",name:"Viking Sky departs",summary:"First dinner on board ocean cruise begins",detail:"Viking Sky departs into the Adriatic. First dinner on board. Settle in, meet fellow passengers. The ocean cruise adventure has begun."}
+      ]},
 
     { date:"Tue 20 Oct", location:"Istanbul – Final Night on Viking Sky", flag:"🇹🇷",
       img:"linear-gradient(160deg,#1a2d5c 0%,#0f1a3a 50%,#0a1025 100%)",heroEmoji:"🕌",heroLabel:"Istanbul – Final Night Onboard",heroSub:"Spice Bazaar · Galata Tower · İstiklal Avenue",
       accommodation:"Viking Sky (final night onboard)", transport:"Ship docked Istanbul | Walk to Galata area",
       activity:"Morning: Viking included excursion — Spice Bazaar (Egyptian Bazaar) and Rüstem Pasha Mosque (exquisitely tiled Ottoman mosque above the bazaar). Back on board by noon for lunch. ~1:30pm: Galata Tower (pre-book timed entry — panoramic views over the Golden Horn and Bosphorus, 45–60 min). Walk up through Galata backstreets to İstiklal Avenue — atmospheric cafés, pastry stops, lively pedestrian boulevard. ~5pm: return to Viking Sky. Final dinner on board 🥂",
       excursion:"✅ INCLUDED: Istanbul – Spice Bazaar & Rüstem Pasha Mosque", tags:["included"],
-      links:[{label:"Galata Tower Info", url:"https://www.galatakule.net.tr/en/", type:"info"},
-             {label:"Spice Bazaar Info", url:"https://www.misircarsisi.org.tr/", type:"info"}] }
-  ]},
+      links:[{label:"Galata Tower Info", url:"https://muze.gov.tr/muze-detay?SectionId=GTK01&DistId=GTK", type:"info"},
+             {label:"Spice Bazaar Info", url:"https://www.misircarsisi.org.tr/", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Viking Spice Bazaar Excursion",summary:"Included Viking excursion — back by noon",detail:"Viking included excursion to the Spice Bazaar (Misir Carsisi, also called the Egyptian Bazaar) and the surrounding Eminonu district. The Spice Bazaar dates from 1664 — 88 vaulted shops selling spices, dried fruits, Turkish delight, lokum, saffron and every aromatic you can imagine. Also includes the Rustem Pasha Mosque, a hidden gem covered in extraordinary Iznik tiles. Check Viking schedule for exact timing."},
+        {time:"~12:00pm",name:"Lunch on Viking Sky",summary:"Back on board for lunch",detail:"Return to ship for lunch. Last full day on Viking Sky — make use of the Aquavit Terrace if weather allows."},
+        {time:"~2:00pm",name:"Galata Tower",summary:"Pre-book timed entry — 14th century tower",detail:"Make your way to the Galata Tower independently via taxi from the dock. The Genoese tower dates from 1348 and gives 360-degree panoramic views over Istanbul — the Golden Horn, the Bosphorus, the Asian shore, the minarets of Sultanahmet. Pre-book timed entry at muze.gov.tr — sells out. Allow 1 hour."},
+        {time:"~3:30pm",name:"Istiklal Avenue",summary:"Istanbul most famous pedestrian boulevard",detail:"Istiklal Caddesi runs 1.4km from the Galata area up to Taksim Square. Thousands of people walking, shops, cafes, patisseries, bookshops, art galleries, historic 19th century arcades, street musicians and the vintage red tram running through the middle. A brilliant evening wander. Stop for a baklava or a kadayif at one of the traditional pastry shops."},
+        {time:"~5:30pm",name:"Return to Viking Sky",summary:"Back on board for final evening",detail:"Return to Viking Sky for the final dinner on the ocean cruise. Say goodbye to your fellow passengers and the crew."},
+        {time:"Evening",name:"Final dinner on Viking Sky",summary:"Last night on the ocean cruise — farewell dinner",detail:"The farewell dinner on Viking Sky. The 14-night Mediterranean and Black Sea cruise comes to an end tomorrow in Istanbul. Two extraordinary Viking cruises — 27 nights on Viking ships since Amsterdam."}
+      ]}
+  ],
+      stops:[
+        {time:"Morning",name:"Check out and transfer to Viking Sky",summary:"Hotel arranged local transfer to dock",detail:"Hotel Grande Italia arranges local transfer to Viking Sky dock. Confirm timing with hotel the evening before."},
+        {time:"Late morning",name:"Board Viking Sky",summary:"Embark settle into stateroom",detail:"Board Viking Sky, meet cabin steward, unpack properly. 14 nights on board. Free professional laundry service throughout. Explore the ship."},
+        {time:"Afternoon",name:"Explore Chioggia optional",summary:"Last chance before departure",detail:"If embarkation is early, explore Chioggia canals, fishing boats and Corso del Popolo before the ship departs."},
+        {time:"Evening",name:"Viking Sky departs",summary:"First dinner on board ocean cruise begins",detail:"Viking Sky departs into the Adriatic. First dinner on board. Settle in, meet fellow passengers. The ocean cruise adventure has begun."}
+      ]},
 
   { id:"istanbul", name:"Istanbul", emoji:"🕌", color:"#8b5e00", days:[
     { date:"Wed 21 Oct", location:"Istanbul – Disembark & Sultanahmet", flag:"🇹🇷",
@@ -669,29 +881,71 @@ const SEGMENTS = [
       excursion:"Bosphorus Dinner Cruise ~7pm — book via hotel (Karaköy/Eminönü pier)", tags:[],
       links:[{label:"Hagia Sophia Info", url:"https://www.hagiasophia.com/", type:"info"},
              {label:"Grand Bazaar Info", url:"https://www.grandbazaaristanbul.org/", type:"info"},
-             {label:"Bosphorus Cruise Info", url:"https://www.bosphorustours.com/", type:"info"}] },
+             {label:"Bosphorus Cruise Info", url:"https://www.bosphorustours.com/", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Disembark Viking Sky",summary:"5 min walk to Hotel De Reve Galata Karakoy",detail:"Disembark with all luggage. Hotel De Reve Galata Special Class is 5 min walk from the dock. Bags may need storing until room ready. Deluxe Double Room, breakfast included. Checkout 10:30pm tomorrow."},
+        {time:"~10:00am",name:"Galata Bridge to Sultanahmet",summary:"35 min walk across the Golden Horn",detail:"Walk from Karakoy across the Galata Bridge. Fishermen line both sides, old city skyline ahead. Continue through Eminonu to Sultanahmet."},
+        {time:"~11:00am",name:"Hagia Sophia",summary:"Pre-book timed entry extraordinary interior",detail:"Built in 537 AD. For 1,000 years the largest cathedral in the world. Massive dome, Byzantine mosaics, overwhelming scale. Pre-book, sells out. Wear modest clothing and remove shoes."},
+        {time:"~12:30pm",name:"Grand Bazaar",summary:"4000 shops one of the worlds oldest markets",detail:"61 covered streets, 4,000 shops. Jewellery, carpets, ceramics, leather, spices, lanterns. Bargaining expected. Have TRY on Wise card for purchases."},
+        {time:"~2:00pm",name:"Lunch near Grand Bazaar",summary:"Traditional Turkish lunch",detail:"Try lahmacun (Turkish flatbread) or a pide at a local spot near the bazaar."},
+        {time:"~7:00pm",name:"Bosphorus Dinner Cruise",summary:"Book via Hotel De Reve Galata",detail:"Evening Bosphorus dinner cruise. City lit up at night, two continents visible, bridges illuminated. Arrange via the hotel. Allow approximately 2 hours."}
+      ]},
 
     { date:"Thu 22 Oct", location:"Istanbul – Asian Side & Farewell Dinner", flag:"🇹🇷",
       img:"linear-gradient(160deg,#1a1a4a 0%,#0f0f2d 50%,#0a0a1a 100%)",heroEmoji:"🌙",heroLabel:"Istanbul – Final Day",heroSub:"Üsküdar · Kadıköy · Rooftop Farewell Dinner",
       accommodation:"Hotel De Reve Galata — Deluxe Double Room (checkout ~10:30pm)", transport:"Ferry Karakoy → Uskudar (~10 min) | Bus/taxi Uskudar → Kadikoy | Ferry Kadikoy → Karakoy (~25 min) | Hotel recommended private transfer → Istanbul Airport IST dep ~10:30pm",
       activity:"Rooftop breakfast at Hotel De Reve Galata — included in rate (only hotel breakfast of stay). ~10am: Ferry Karakoy → Uskudar. Waterfront walk, Maiden's Tower views, local tea garden. ~1pm: Bus/taxi to Kadikoy for lunch. ~3pm: Ferry back to Karakoy. Rest and final packing at hotel. ~7pm: Rooftop farewell dinner 🥂. ~10:30pm: Check out. Hotel recommended private transfer to Istanbul Airport IST. IMPORTANT: MH4270 is operated by Turkish Airlines — check in at Turkish Airlines desk, not Malaysian Airlines. MH4270 departs 01:30am Friday 23 October.",
       excursion:"Rooftop dinner ~7pm — reserve table via hotel | Airport transfer ~10:30pm — book via hotel", tags:[],
-      links:[{label:"Uskudar & Asian Side Guide", url:"https://istanbul-tourist-information.com/uskudar/", type:"info"},
-             {label:"Istanbul Transport - Moovit", url:"https://moovitapp.com/istanbul-1563/", type:"info"}] }
-  ]},
+      links:[{label:"Uskudar & Asian Side Guide", url:"https://www.istanbul.com/districts/uskudar", type:"info"},
+             {label:"Istanbul Transport - Moovit", url:"https://moovitapp.com/istanbul-1563/", type:"info"}] ,
+      stops:[
+        {time:"Morning",name:"Rooftop breakfast at Hotel De Reve Galata",summary:"Included in rate — only hotel breakfast of the trip",detail:"The only included hotel breakfast of the entire 41-day trip. Hotel De Reve Galata has a rooftop terrace with Bosphorus views. Take your time — enjoy the view of the Golden Horn and the Galata Tower. You have earned a relaxed morning."},
+        {time:"~10:00am",name:"Ferry Karakoy to Uskudar",summary:"10 min crossing to Asian Istanbul",detail:"Walk to the Karakoy ferry pier (5 min from hotel) and take the ferry across to Uskudar on the Asian shore. The crossing takes approximately 10 minutes and the views back to the European skyline — Topkapi Palace, the minarets of the Blue Mosque and Hagia Sophia — are extraordinary. Buy an Istanbulkart card from the pier machines for the ferries. Use the Moovit app for Istanbul transport."},
+        {time:"~10:20am",name:"Uskudar waterfront",summary:"Ottoman atmosphere — Maiden Tower views",detail:"Uskudar is quieter, more local, more Ottoman and far fewer tourists than the European side. Walk the waterfront promenade south from the ferry pier. Look out to the Maiden Tower (Kiz Kulesi) on its tiny island in the middle of the Bosphorus. Find a tea garden (cay bahcesi) for a glass of strong Turkish tea and take in the view."},
+        {time:"~12:00pm",name:"Ferry or taxi to Kadikoy",summary:"Most bohemian neighbourhood on the Asian shore",detail:"From Uskudar take a short ferry or taxi to Kadikoy, the liveliest neighbourhood on the Asian shore. The covered Kadikoy Bazaar, excellent independent coffee shops, street food stalls, record shops, bookshops and a genuinely buzzing market atmosphere."},
+        {time:"~12:30pm",name:"Lunch in Kadikoy",summary:"Best honest Turkish lunch of the trip",detail:"Kadikoy has outstanding Turkish food at genuinely local prices. Try Ciya Sofrasi (Guneslibahce Sokak 43) — one of the most celebrated traditional Turkish restaurants in Istanbul, a canteen-style place with extraordinary regional Turkish dishes that change daily. Or explore the market streets for lahmacun or kofte street food. Allow 1.5 hours."},
+        {time:"~2:30pm",name:"Ferry Kadikoy to Karakoy",summary:"25 min return crossing — Bosphorus views",detail:"Take the ferry back from Kadikoy to Karakoy. The 25 minute crossing gives magnificent views of both the European and Asian shores, the Bosphorus bridge in the distance. One of the great urban ferry rides in the world. Back at the hotel approximately 3:00pm."},
+        {time:"~3:00pm",name:"Rest and final packing",summary:"Check out is 10:30pm tonight",detail:"Last afternoon of the 41-day trip. Rest properly. Pack carefully — leave behind the travel umbrella and remaining toiletries to save weight on the flight home. Charge all devices fully."},
+        {time:"7:00pm",name:"Rooftop farewell dinner",summary:"Reserve table via hotel — final dinner of the trip",detail:"Final dinner of the entire trip on the Hotel De Reve Galata rooftop. Book the table in advance via the hotel. Bosphorus views by night. Take your time — you are checking out at 10:30pm so no rush. A fitting farewell to 41 extraordinary days."},
+        {time:"10:30pm",name:"Check out and private transfer to IST Airport",summary:"IMPORTANT — TURKISH AIRLINES DESK for MH4270",detail:"Private transfer to Istanbul Airport (IST) arranged via the hotel. Allow at least 2 hours before the 1:30am departure. CRITICAL: MH4270 is operated by Turkish Airlines — check in at the TURKISH AIRLINES desk at IST, NOT the Malaysian Airlines desk. MH4270 departs 1:30am Friday 23 October."}
+      ]}
+  ],
+      stops:[
+        {time:"Morning",name:"Disembark Viking Sky",summary:"5 min walk to Hotel De Reve Galata Karakoy",detail:"Disembark with all luggage. Hotel De Reve Galata Special Class is 5 min walk from the dock. Bags may need storing until room ready. Deluxe Double Room, breakfast included. Checkout 10:30pm tomorrow."},
+        {time:"~10:00am",name:"Galata Bridge to Sultanahmet",summary:"35 min walk across the Golden Horn",detail:"Walk from Karakoy across the Galata Bridge. Fishermen line both sides, old city skyline ahead. Continue through Eminonu to Sultanahmet."},
+        {time:"~11:00am",name:"Hagia Sophia",summary:"Pre-book timed entry extraordinary interior",detail:"Built in 537 AD. For 1,000 years the largest cathedral in the world. Massive dome, Byzantine mosaics, overwhelming scale. Pre-book, sells out. Wear modest clothing and remove shoes."},
+        {time:"~12:30pm",name:"Grand Bazaar",summary:"4000 shops one of the worlds oldest markets",detail:"61 covered streets, 4,000 shops. Jewellery, carpets, ceramics, leather, spices, lanterns. Bargaining expected. Have TRY on Wise card for purchases."},
+        {time:"~2:00pm",name:"Lunch near Grand Bazaar",summary:"Traditional Turkish lunch",detail:"Try lahmacun (Turkish flatbread) or a pide at a local spot near the bazaar."},
+        {time:"~7:00pm",name:"Bosphorus Dinner Cruise",summary:"Book via Hotel De Reve Galata",detail:"Evening Bosphorus dinner cruise. City lit up at night, two continents visible, bridges illuminated. Arrange via the hotel. Allow approximately 2 hours."}
+      ]},
 
   { id:"home", name:"Home", emoji:"🏠", color:"#4a5568", days:[
     { date:"Fri 23 Oct", location:"Istanbul → KL → Melbourne", calLabel:"In Transit", flag:"🌏",
       img:"linear-gradient(160deg,#0a0f1a 0%,#1a2d5c 50%,#2d4a8f 100%)",heroEmoji:"🌙",heroLabel:"Istanbul → KL → Melbourne",heroSub:"MH4270 · MH147 · Homeward Bound",
       accommodation:"In Transit", transport:"MH4270 Istanbul→KL dep 01:40 CHECK IN AT TURKISH AIRLINES DESK · 25kg baggage each | Transit KL · MH147 KL→Melbourne dep 8:30pm Gary 15A · Leonie 15C · 25kg baggage each",
       activity:"Depart Istanbul 01:30am on MH4270 (Turkish Airlines operated — check in at Turkish Airlines counter). Arrive KL 5:15pm. Long transit — use airport lounge if accessible, free WiFi available. MH147 departs KL 8:30pm to Melbourne. Arrive Melbourne Saturday 7:15am.",
-      excursion:null, tags:["flight"], links:[] },
+      excursion:null, tags:["flight"], links:[] ,
+      stops:[
+        {time:"1:30am",name:"MH4270 Istanbul to Kuala Lumpur",summary:"TURKISH AIRLINES DESK 25kg baggage each",detail:"Check in at Turkish Airlines counter at Istanbul Airport IST. 25kg checked baggage each. Long overnight flight to KL."},
+        {time:"~5:15pm",name:"Arrive Kuala Lumpur",summary:"Long transit free WiFi in terminal",detail:"Long transit before MH147 at 8:30pm. Free WiFi throughout. Good opportunity to call family."},
+        {time:"8:30pm",name:"MH147 Kuala Lumpur to Melbourne",summary:"Gary 15A Leonie 15C 25kg baggage",detail:"Departs KL 8:30pm, arrives Melbourne approximately 7:15am Saturday. Seats 15A and 15C adjacent in 2-4-2 layout. Try to sleep."}
+      ]},
     { date:"Sat 24 Oct", location:"Melbourne → Launceston – Home!", calLabel:"Home!", flag:"🇦🇺",
       img:"linear-gradient(160deg,#1a5c3a 0%,#0f3a20 50%,#0a2010 100%)",heroEmoji:"🏠",heroLabel:"Home – Launceston, Tasmania!",heroSub:"41 days · 6 countries · 2 Viking cruises · Memories forever",
       accommodation:"Home – Launceston, Tasmania", transport:"VA1366 Melbourne→Launceston dep 11:15am arr 12:25pm (Business Class 🥂) Gary 02C · Leonie 02A | Family pickup Launceston Airport",
       activity:"Arrive Melbourne ~7:15am. Clear customs and immigration. Connect to VA1366 departing 11:15am from Terminal 3. Business Class seats 02C (Gary) and 02A (Leonie) — a perfect way to end the adventure. Arrive Launceston 12:25pm. Family pickup from the airport. HOME after 41 extraordinary days! 6 countries, 2 Viking cruises, 30+ ports and memories to last a lifetime. 🥂",
-      excursion:null, tags:["flight"], links:[] }
-  ]}
+      excursion:null, tags:["flight"], links:[] ,
+      stops:[
+        {time:"~7:15am",name:"Arrive Melbourne Airport",summary:"Clear customs and immigration",detail:"Arrive Melbourne approximately 7:15am after the overnight flight from Kuala Lumpur. Clear customs, collect bags, pass through immigration. Allow 45 to 60 min for the full process."},
+        {time:"11:15am",name:"VA1366 Melbourne to Launceston",summary:"Business Class — Gary 02C — Leonie 02A",detail:"VA1366 departs Melbourne 11:15am, arrives Launceston 12:25pm. Business Class seats 02C (Gary) and 02A (Leonie). Champagne on the way home. 41 days, 2 Viking cruises, 14 countries, 30+ ports of call across Europe."},
+        {time:"12:25pm",name:"Home — Launceston Airport",summary:"Family pickup from the airport",detail:"Family pickup from Launceston Airport. HOME after 41 extraordinary days across Europe. The memories will last a lifetime."}
+      ]}
+  ],
+      stops:[
+        {time:"1:30am",name:"MH4270 Istanbul to Kuala Lumpur",summary:"TURKISH AIRLINES DESK 25kg baggage each",detail:"Check in at Turkish Airlines counter at Istanbul Airport IST. 25kg checked baggage each. Long overnight flight to KL."},
+        {time:"~5:15pm",name:"Arrive Kuala Lumpur",summary:"Long transit free WiFi in terminal",detail:"Long transit before MH147 at 8:30pm. Free WiFi throughout. Good opportunity to call family."},
+        {time:"8:30pm",name:"MH147 Kuala Lumpur to Melbourne",summary:"Gary 15A Leonie 15C 25kg baggage",detail:"Departs KL 8:30pm, arrives Melbourne approximately 7:15am Saturday. Seats 15A and 15C adjacent in 2-4-2 layout. Try to sleep."}
+      ]}
 ];
 
 // ════════════════════════════════════════
@@ -844,6 +1098,37 @@ function btnIcon(type) {
   return 'ℹ️';
 }
 
+
+function buildStops(stops, segIdx, dayIdx) {
+  let html = '<div class="stops-list">';
+  stops.forEach(function(stop, si) {
+    const hasDetail = stop.detail && stop.detail.trim().length > 0;
+    const id = 'stop-' + segIdx + '-' + dayIdx + '-' + si;
+    html += '<div class="stop-row' + (hasDetail ? '' : ' no-detail') + '"' +
+      (hasDetail ? ' onclick="toggleStop(\'' + id + '\')"' : '') + '>';
+    html += '<div class="stop-time">' + (stop.time || '') + '</div>';
+    html += '<div class="stop-main">';
+    html += '<div class="stop-header">';
+    html += '<div class="stop-name">' + stop.name + '</div>';
+    if (hasDetail) html += '<div class="stop-toggle" id="' + id + '-btn">+ detail</div>';
+    html += '</div>';
+    if (stop.summary) html += '<div class="stop-summary">' + stop.summary + '</div>';
+    if (hasDetail) html += '<div class="stop-detail" id="' + id + '">' + stop.detail + '</div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function toggleStop(id) {
+  const el = document.getElementById(id);
+  const btn = document.getElementById(id + '-btn');
+  if (!el) return;
+  const open = el.style.display === 'block';
+  el.style.display = open ? 'none' : 'block';
+  if (btn) btn.textContent = open ? '+ detail' : '- close';
+}
+
 function buildMain() {
   const c = document.getElementById('main');
   if (!c) return;
@@ -921,7 +1206,7 @@ function buildMain() {
       <div class="day-body">
         <div class="day-section">
           <div class="section-label">📋 Plan for the Day</div>
-          <div class="section-content">${day.activity}</div>
+          ${day.stops && day.stops.length ? buildStops(day.stops, activeSegment, di) : `<div class="section-content">${day.activity}</div>`}
         </div>
         <div class="day-section">
           <div class="section-label">🏨 Accommodation</div>
@@ -988,9 +1273,16 @@ const DOC_CATEGORIES = [
     {name:'Viking Sky – Excursion: Troy & Gallipoli', detail:'Pre-booked ANZAC memorial sites'},
   ]},
   { id:'tickets', icon:'🎟', title:'Pre-booked Tickets & Shows', items:[
-    {name:'Moulin Rouge – Féerie Show', detail:'Thu 17 Sep, 20:30 seating, Paris'},
+    {name:'2CV Legendary Paris Night Tour', detail:'Wed 16 Sep 8:00pm — book at 2cvparistour.com (BOOKED ✅ — 2.5hrs, hotel pickup, drop-off included)'},
+    {name:'Les Invalides + Napoleon Tomb', detail:'Thu 17 Sep ~11:15am — musee-armee.fr, €17 per adult, sling bag only, no large bags'},
+    {name:'Pink Mamma Restaurant', detail:'Thu 17 Sep 6:15pm — book from 2 September (opens 15 days prior), Montmartre'},
+    {name:'Moulin Rouge – Feerie Show', detail:'Thu 17 Sep, 8:30pm seating, Paris'},
+    {name:'Opera Garnier Self-Guided Entry', detail:'Fri 18 Sep 11:30am slot — operadeparis.fr, ~€15 per adult'},
+    {name:'Sainte-Chapelle Timed Entry', detail:'Fri 18 Sep 4:30pm slot — sainte-chapelle.fr, €22 per adult, book 2-3 weeks ahead'},
+    {name:'Notre-Dame Timed Entry', detail:'Fri 18 Sep ~5:20pm — notredamedeparis.fr, FREE, book 2 days before'},
     {name:'Versailles – Passport Ticket', detail:'Sat 19 Sep, 09:30 timed entry'},
     {name:'Margaux Restaurant', detail:'Sat 19 Sep, 19:00, Paris 16th'},
+    {name:'Eurostar Paris to Amsterdam', detail:'Sun 20 Sep 10:25am — BOOKED ✅'},
     {name:'Bosphorus Dinner Cruise', detail:'Wed 21 Oct ~7pm — book via Hotel De Reve Galata'},
     {name:'Hagia Sophia – Timed Entry', detail:'Wed 21 Oct — pre-book online, sells out'},
     {name:'Galata Tower – Timed Entry', detail:'Tue 20 Oct afternoon — pre-book online'},
@@ -1246,6 +1538,13 @@ const PACKING_SECTIONS = [
     { text: "Airport transfer 22 Oct 10:30pm booked via hotel", badge: "Istanbul" },
     { text: "Danube Night Cruise booked (Budapest - Sun or Mon evening)", badge: "Budapest" },
     { text: "Austrian Airlines seats selected online (ref DQXON9)", badge: "Flights" },
+    { text: "Confirm Istanbul Airport terminal for MH4270 Turkish Airlines", badge: "Flights" },
+    { text: "Load Wise card with EUR, HUF and TRY before departure", badge: "Money" },
+    { text: "Set up and test WhatsApp on both phones before departure", badge: "Comms" },
+    { text: "Re-read RACT policy 91003813 — confirm cruise cancellation and medical evacuation cover", badge: "Insurance" },
+    { text: "Watch for Viking pre-cruise info packs — check email July/August for both Magni and Sky", badge: "Viking" },
+    { text: "Research Viator local tours for Athens (Wed 14 Oct and Thu 15 Oct) — book early, sells out", badge: "Athens" },
+    { text: "Book Budapest Sunday dinner 4 Oct — Jewish Quarter. Mazel Tov or Macesz Bistro", badge: "Budapest" },
     { text: "MH4270 Turkish Airlines seats selected at check-in", badge: "Flights" },
     { text: "CPAP distilled water - confirm Viking ships stock it", badge: "Viking" },
     { text: "Contact Hotel De Reve Galata re: breakfast credit (23 Oct)", badge: "Istanbul" },
@@ -1315,10 +1614,10 @@ const TASK_GROUPS = [
     { text: "Book TransfersX - Melbourne Airport to Pan Pacific", meta: "14 Sep arrival transfer", badge: "urgent" },
     { text: "Book TransfersX - Pan Pacific to Melbourne Airport", meta: "15 Sep depart ~10am for MH148 1:25pm", badge: "urgent" },
     { text: "Book Eurostar Paris to Amsterdam", meta: "Sun 20 Sep 10:30am - book at eurostar.com", badge: "urgent" },
-    { text: "Book Daytrip - CDG Airport to Le Jardin de Verre Paris", meta: "Wed 16 Sep arrival - book at daytrip.com", badge: "urgent" },
+    { text: "Book Welcome Pickups - CDG Airport to Le Jardin de Verre Paris", meta: "Wed 16 Sep arrival - book at welcomepickups.com", badge: "urgent" },
     { text: "Book G7 Taxi - Le Jardin de Verre to Gare du Nord", meta: "Sun 20 Sep morning - book at g7.fr or app", badge: "urgent" },
-    { text: "Book Daytrip - 7Seasons Budapest to Budapest Airport BUD", meta: "Tue 6 Oct - depart ~8am for OS632 11:15am", badge: "urgent" },
-    { text: "Book Daytrip - Venice Marco Polo Airport to Hotel Grande Italia Chioggia", meta: "Tue 6 Oct afternoon arrival (~1hr transfer)", badge: "urgent" },
+    { text: "Book private transfer - 7Seasons Budapest to Budapest Airport BUD", meta: "Tue 6 Oct - depart ~8am for OS632 11:15am", badge: "urgent" },
+    { text: "Book private transfer - Venice Marco Polo Airport to Hotel Grande Italia Chioggia", meta: "Tue 6 Oct afternoon arrival (~1hr transfer)", badge: "urgent" },
     { text: "Notify Telstra of travel dates and countries", meta: "Check International Day Pass cost and activation", badge: "urgent" },
     { text: "Notify Optus of travel dates and countries (Leonie)", meta: "Check International Day Pass cost and activation", badge: "urgent" },
     { text: "Notify bank and credit card providers of travel", meta: "Wise card + all other cards - dates 14 Sep to 24 Oct", badge: "urgent" },
@@ -1329,7 +1628,7 @@ const TASK_GROUPS = [
     { text: "Turn OFF data roaming on Telstra SIM before boarding in Launceston", meta: "Critical - do this before 14 Sep to avoid bill shock", badge: "soon" },
     { text: "Turn OFF data roaming on Optus SIM before boarding (Leonie)", meta: "Critical - do this before 14 Sep to avoid bill shock", badge: "soon" },
     { text: "Set up WhatsApp on both phones and test calls", meta: "Create family group chat, practice voice and video calls", badge: "soon" },
-    { text: "Add key contacts to WhatsApp", meta: "Family, hotels, Daytrip drivers, G7 taxi", badge: "soon" },
+    { text: "Add key contacts to WhatsApp", meta: "Family, hotels, Welcome Pickups, transfer operators, G7 taxi", badge: "soon" },
     { text: "Add power bank to sling bag", meta: "500mAh minimum for phone charging on the go", badge: "soon" },
     { text: "Load Wise card with EUR, HUF and TRY", meta: "EUR for Paris city tax and incidentals, HUF for Budapest city tax, TRY for Istanbul", badge: "soon" },
     { text: "Confirm CPAP distilled water availability with Viking Magni", meta: "Email Viking before departure", badge: "soon" },
@@ -1341,12 +1640,17 @@ const TASK_GROUPS = [
     { text: "Check Optus International Day Pass terms (Leonie)", meta: "Confirm only charged on days she makes or receives calls", badge: "soon" },
   ]},
   { title: "Paris - Book Before Travel", color: "#1a5c9c", items: [
-    { text: "Book Moulin Rouge - Feerie Show", meta: "Thu 17 Sep 8:30pm seating - check if already booked", badge: "soon" },
+    { text: "2CV Paris Night Tour — BOOKED ✅", meta: "Wed 16 Sep 8:00pm, 2.5hrs, hotel pickup and drop-off confirmed", badge: "whenever" },
+    { text: "Book Les Invalides timed entry", meta: "Thu 17 Sep ~11:15am — musee-armee.fr — €17 per adult — leave large backpack at hotel, sling bag only", badge: "soon" },
+    { text: "Book Pink Mamma restaurant", meta: "Thu 17 Sep 6:15pm — opens 15 days prior so book on or after 2 September 2026 — fills fast", badge: "soon" },
+    { text: "Book Moulin Rouge - Feerie Show", meta: "Thu 17 Sep 8:30pm seating - moulinrouge.fr", badge: "soon" },
+    { text: "Book Opera Garnier self-guided entry", meta: "Fri 18 Sep 11:30am slot — operadeparis.fr — ~€15 per adult", badge: "soon" },
+    { text: "Book Sainte-Chapelle timed entry", meta: "Fri 18 Sep 4:30pm slot — sainte-chapelle.fr — €22 per adult — book 2-3 weeks ahead", badge: "soon" },
+    { text: "Book Notre-Dame timed entry", meta: "Fri 18 Sep ~5:20pm — notredamedeparis.fr — FREE — book 2 days before departure", badge: "whenever" },
     { text: "Book Versailles Passport Ticket", meta: "Sat 19 Sep 9:30am timed entry - book at en.chateauversailles.fr", badge: "soon" },
     { text: "Book Margaux Restaurant", meta: "Sat 19 Sep 7:00pm - Paris 16th arrondissement", badge: "soon" },
-    { text: "Book 2CV Legendary Paris Night Tour", meta: "Fri 18 Sep 8:00pm - book at 4roues-sous-1parapluie.com", badge: "soon" },
-    { text: "Book Wine Tasting at Vins & Whisky", meta: "Fri 18 Sep 6:00pm - near Latin Quarter", badge: "soon" },
-    { text: "Book Batobus Day Pass", meta: "Thu 17 Sep - can buy online or at pier", badge: "whenever" },
+    { text: "Eurostar Paris to Amsterdam — BOOKED ✅", meta: "Sun 20 Sep 10:25am — seats confirmed", badge: "whenever" },
+    { text: "Book Batobus 48hr pass", meta: "Start Thu 17 Sep from Jardin des Plantes — batobus.com or buy at stop", badge: "whenever" },
     { text: "Paris City Tax - have EUR cash ready", meta: "AUD ~$117 payable at Le Jardin de Verre on arrival", badge: "soon" },
   ]},
   { title: "Budapest - Book Before Travel", color: "#1a5c9c", items: [
@@ -1492,7 +1796,7 @@ function buildEsimPanel() {
   <div class="esim-step"><div class="esim-step-num">1</div><div class="esim-step-text">Download WhatsApp on both phones if not already installed. It registers to your Australian mobile number - no new number needed.</div></div>
   <div class="esim-step"><div class="esim-step-num">2</div><div class="esim-step-text">Create a family group chat before departure - add all family members who you will update during the trip</div></div>
   <div class="esim-step"><div class="esim-step-num">3</div><div class="esim-step-text">Practice making a WhatsApp voice call and video call before September - call each other or family to get comfortable</div></div>
-  <div class="esim-step"><div class="esim-step-num">4</div><div class="esim-step-text">Add Hotel De Reve Galata, Daytrip support and G7 Taxi to contacts - most will have WhatsApp for communication</div></div>
+  <div class="esim-step"><div class="esim-step-num">4</div><div class="esim-step-text">Add Hotel De Reve Galata, Welcome Pickups, transfer operators and G7 Taxi to contacts - most will have WhatsApp for communication</div></div>
   <div class="esim-step"><div class="esim-step-num">5</div><div class="esim-step-text">Calling family in Australia via WhatsApp: open the chat, tap the phone or video icon. Free over any WiFi or Airalo data.</div></div>
   <div class="esim-warning">Important: When making WhatsApp calls, make sure you are connected to Airalo data or ship WiFi - not Telstra/Optus data roaming</div>
 </div>
